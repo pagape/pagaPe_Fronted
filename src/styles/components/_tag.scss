@@ -1,0 +1,11 @@
+.tagwhitebor{
+  border: 1px dashed var(--color-strongactive);
+  height: 40px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:6px;
+  color: var(--color-strongactive);
+  border-radius: 20px;
+}

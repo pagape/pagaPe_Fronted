@@ -1,0 +1,324 @@
+.utable{
+  .p-datatable{
+   .p-datatable-thead{
+
+   }
+  }
+
+  .p-datatable-thead > tr > th{
+    border-width: 0;
+    .txt-center.transparent-header {
+      border-width: 0;
+      background-color: transparent !important;
+    }
+  }
+
+  .p-datatable-tbody > tr > td{
+    border-color: #B9B9B9;
+    overflow-y: visible;
+
+
+    &.txt-center{
+      text-align: center;
+    }
+  }
+
+  .p-datatable-tbody{
+    overflow-y: visible;
+
+  }
+}
+
+.btntable{
+  i{
+    color: #009B3F;
+  }
+}
+
+
+
+/*=== Subtable start ===*/
+
+.subtabletr{
+
+  td{
+    background: #F3F3F3;
+    border-radius: 15px;
+    .p-datatable{
+      .p-datatable-thead{
+        background: #F3F3F3;
+        th{
+          background: #F3F3F3;
+        }
+      }
+      .p-datatable-tbody > tr > td{
+        background: transparent;
+        border: none;
+        border-radius: initial !important;
+      }
+      .p-datatable-tbody > tr {
+        background: var(--color-white);
+        border: none;
+        border-radius: 10px !important;
+      }
+      .p-datatable-tbody{
+        max-height: 200px;
+        overflow: auto;
+      }
+     }
+
+     .toprowsubtable{
+     }
+
+
+  }
+}
+
+/*=== Subtable END ===*/
+
+/* Estilo para la fila expandida */
+.p-datatable-row-expansion {
+  background-color: #f4f4f4 !important;
+  font-weight: bold;
+}
+
+.p-datatable-row-expansion td {
+  padding: 20px;
+  border: 1px solid #ddd;
+}
+
+
+.searchfdtable{
+  width: 300px;
+}
+
+
+/* === tag  start === */
+
+.utag{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #A0F2C1;
+  color: var(--color-primary);
+  font-size: 14px;
+  width: 90px;
+  height: 28px;
+  padding: 7px 12px;
+  text-align: center ;
+  border-radius: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tagP{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fbecc8;
+  color: #b78000;
+  font-size: 14px;
+  width: 90px;
+  height: 28px;
+  padding: 7px 12px;
+  text-align: center ;
+  border-radius: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tagR{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFDABA;
+  color: #FF6A00;
+  font-size: 14px;
+  width: 90px;
+  height: 28px;
+  padding: 7px 12px;
+  text-align: center ;
+  border-radius: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tagU{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #B7E6FF;
+  color: #00652A;
+  font-size: 14px;
+  width: 90px;
+  height: 28px;
+  padding: 7px 12px;
+  text-align: center ;
+  border-radius: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* === tag  end === */
+
+
+.p-datatable-thead{
+  th.txt-center{
+    text-align: center;
+  }
+}
+
+
+
+/* === TOOLTIP START === */
+
+.p-tooltip {
+  // box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.11);
+
+}
+
+/* Customize the arrow (triangle) */
+.p-tooltip .p-tooltip-arrow {
+
+}
+
+.p-tooltip-text{
+
+}
+
+/* Add animation effect */
+.p-tooltip {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.p-datatable thead.p-datatable-thead {
+  background-color: transparent !important;
+
+  th{
+    color: var(--color-strong);
+  }
+}
+
+th.transparent-header {
+  background-color: transparent !important;
+  color: #003B5B !important;
+  font-weight: bold;
+
+}
+
+/* === TOOLTIP END === */
+
+
+
+.p-paginator{
+  justify-content: flex-end !important;
+}
+
+
+
+//ESTILO COLOR FONDO BODY
+
+.utable2{
+  .p-datatable{
+   .p-datatable-thead{
+
+   }
+  }
+
+  .p-datatable-thead > tr > th{
+    border-width: 0;
+    .txt-center.transparent-header {
+      border-width: 0;
+      background-color: transparent !important;
+    }
+  }
+
+  .p-datatable-tbody > tr > td{
+    border-color: #b9b9b999;
+    overflow-y: visible;
+    background-color:#F6F6F6;
+
+  }
+
+  .p-datatable-tbody{
+    overflow-y: visible;
+
+  }
+}
+
+.tableexpst1{
+  .p-datatable-table-container{
+    .p-datatable-table-container{
+      .p-datatable-thead > tr > th{
+        // background: #F3F3F3 !important;
+      }
+      .p-datatable-table{
+        .p-datatable-thead > tr > th{
+          // background: #F3F3F3 !important;
+        }
+      }
+    }
+  }
+
+
+  .p-datatable-tbody > tr{
+    // background: #F3F3F3 !important;
+  }
+
+}
+
+
+.p-datatable-tbody > tr > td{
+
+  &.txt-center{
+    text-align: center;
+  }
+}
+
+.fixed-width-table {
+  // table-layout: fixed;
+  width: 100%;
+}
+
+
+.estado-tag {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  width: 100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+  strong{
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.estado-pendiente {
+  background-color: #fbecc8;
+  color: #b78000;
+}
+
+.estado-aprobado {
+  background-color: #d5f7e0;
+  color: #2e7d32;
+}
+
+.estado-cancelado {
+  background-color: #fcdcdc;
+  color: #c62828;
+}

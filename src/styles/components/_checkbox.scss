@@ -1,0 +1,16 @@
+/* checkbox start */
+.p-checkbox-box{
+  border: 2px solid #00B94C !important;
+  background: transparent !important;
+
+  .p-checkbox-checked.p-highlight {
+
+    background: #00B94C!important;
+
+  }
+}
+.p-checkbox.p-checkbox-checked.p-highlight .p-checkbox-box {
+  background: #00B94C !important;
+  border-color: #008C3A !important;
+}
+/* checkbox end */

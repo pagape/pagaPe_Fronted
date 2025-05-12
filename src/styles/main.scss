@@ -1,0 +1,12 @@
+@forward 'variables';
+@forward 'mixins';
+@forward 'globals';
+@forward 'typography';
+@forward 'helpers';
+@forward 'animations';
+@forward 'components/all';
+
+
+.p-dialog-mask{
+  background: rgba(0, 0, 0, 0.321);
+}

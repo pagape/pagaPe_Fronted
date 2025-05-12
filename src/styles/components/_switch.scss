@@ -1,0 +1,48 @@
+.p-toggleswitch{
+  width: 2.5rem;
+  height: 1.3rem;
+  border-radius: 14px;
+  border: 2px solid #00B94C;
+
+  .p-toggleswitch-slider{
+    // background: var(--color-white);
+    background: transparent !important;
+  }
+
+  .p-toggleswitch-handle{
+    // background: var(--p-toggleswitch-handle-background);
+    background: #00B94C !important;
+  }
+}
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider{
+  background: var(--p-toggleswitch-checked-background);
+  border-color: var(--p-toggleswitch-checked-border-color);
+}
+
+
+
+.toglesswitst{
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: var(--fweight-bold);
+  background: var(--color-quaternary);
+  padding: 6px 20px;
+  border-radius: 24px;
+  text-align: center;
+}
+
+.uswithtogle{
+  span{
+  }
+
+  .isActiveswitch{
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: var(--fweight-bold);
+    background: var(--color-quaternary);
+    padding: 6px 20px;
+    border-radius: 24px;
+    text-align: center;
+  }
+}

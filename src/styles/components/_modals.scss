@@ -1,0 +1,98 @@
+.p-dialog-header{
+  display:none !important;
+}
+
+.p-dialog-content{
+  padding: 40px !important;
+  overflow-y: visible !important;
+}
+
+.p-dialog{
+  border-radius: 20px !important;
+}
+
+
+
+/* === tables start ==== */
+.tablest1{
+  .p-datatable-tbody > tr{
+    background: #F3F3F3 !important;
+  }
+
+  .p-datatable-tbody > tr > td {
+    border-color: #B9B9B9 !important;
+  }
+}
+
+
+/* === tables end ==== */
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.modal-container {
+  padding: 20px;
+  text-align: center;
+}
+.modal-body {
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 10px;
+}
+
+
+/* form p*/
+
+
+
+
+/* ===  mdAproval ====*/
+.mdAproval{
+  .p-dialog-content{
+    padding: 40px 27px !important;
+  }
+}
+
+/* ===  mdAproval end ====*/
+
+/* ===  mdstart ====*/
+.mdask{
+
+
+  .mdaskcontent{
+    max-height: 79vh;
+    overflow-y: auto;
+  }
+}
+
+/* ===  mdstart end ====*/
+
+// .mdresultrespond{
+//   .mdresultrespondcont{
+//     .mdaskcontent{
+//       max-height: 79vh;
+//       overflow-y: auto;
+//     }
+//   }
+// }
+
+.scrollfbox{
+  max-height: 69vh;
+  overflow-y: auto;
+}
+
+
+.mdforcescroll{
+  max-height: 80vh;
+  overflow-y: auto;
+}

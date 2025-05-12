@@ -1,0 +1,111 @@
+/* RESET */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  outline: none;
+  text-decoration: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  // overflow: hidden !important;
+}
+
+/* *::selection{
+    background-color: ;
+   color: ;
+} */
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1;
+  color: var(--color-black);
+  width: 100vw; /* Ajusta al tamaño completo */
+  height: 100vh; /* Permite que el contenido crezca más allá del viewport */
+  overflow-x: hidden; /* Evita el scroll horizontal */
+
+  // position: relative;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-style: normal;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+a {
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background: transparent;
+  cursor: pointer;
+  border-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  outline: none;
+  border-color: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+figure {
+  margin: 0;
+}
+
+img {
+  display: block;
+  margin: 0;
+}
+
+textarea{
+  resize: none;
+}
+
+label{
+  line-height: 1;
+}
+

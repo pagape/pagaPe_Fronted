@@ -1,0 +1,213 @@
+.login-container {
+  display: flex;
+  width: 40%;
+  background: linear-gradient(135deg, #003B5B,#00943D);
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  zoom: 80%
+
+
+}
+
+.input{
+  gap: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+.image-container {
+  flex: 1;
+  background-color: #f4f4f4;
+}
+
+.login-logo {
+  max-width: 300px;
+}
+
+.login {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Ocupa toda la pantalla */
+.login-page {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #A0F2C1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: transparent;
+  color: white;
+}
+
+.form-group.remember-password {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  margin-right: 10px;
+}
+
+
+.recovery{
+
+  text-decoration: underline;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-right: 10px;
+// margin-top: 15px !important;
+  color:  white;
+  border-bottom-color: black;
+  border-bottom-width: thin;
+
+}
+
+.title{
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+
+}
+
+.recovery:hover{
+  cursor: pointer;
+  color:  #003B5B;
+  border-bottom-color: #003B5B;
+}
+
+/* Formulario */
+form {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  color: white;
+  border-radius: 8px;
+  gap: 32px;
+  flex-direction: column;
+}
+
+form-group{
+
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.form-group .tittle{
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-content: center;
+}
+
+button {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  background:var(--color-tertiary);
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.button-sec {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  background-color: white;
+  color: #003B5B;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.button-sec:hover {
+  color: var(--color-quinary);
+}
+
+
+.full-screen {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  color: white;
+
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+
+
+.p-toggleswitch {
+  border: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+
+.p-toggleswitch-slider::before,
+.p-toggleswitch-slider::after {
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Ajusta el slider del switch */
+.p-toggleswitch-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 12px;
+  transition: background-color 0.3s;
+}
+
+.p-toggleswitch-handle {
+
+  background: transparent !important;
+}
+
+
+
+
+label{
+  color: white;
+  align-content: center;
+}
+
+.subtitle{
+  color: white; font-size: 16px;
+}
+
+
+

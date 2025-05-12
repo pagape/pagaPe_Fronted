@@ -1,0 +1,27 @@
+
+.p-radiobutton-checked{
+  .p-radiobutton-box{
+    background: var(--color-white) !important;
+    border:     .125remsolid #ccc;
+  }
+  .p-radiobutton-icon{
+    border-color: #28a745 !important;
+    background: var(--color-primary) !important;
+  }
+
+}
+
+.p-radiobutton-box {
+  border:     .125rem solid var(--color-primary) !important;
+}
+
+
+
+// ::ng-deep .p-radiobutton .p-radiobutton-box .p-radiobutton-icon  {
+//   border-color: #28a745 !important;
+//   background: #28a745 !important;
+// }
+
+// ::ng-deep .p-radiobutton .p-radiobutton-box {
+//   border: 2px solid #ccc;
+// }

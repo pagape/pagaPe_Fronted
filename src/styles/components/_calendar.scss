@@ -1,0 +1,50 @@
+.calendarst1{
+  min-width:262px;
+  .p-datepicker-clear-icon{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%); 
+  }
+
+  &.p-datepicker-input {
+
+  }
+  &:has(.p-datepicker-clear-icon) .p-datepicker-input {
+    padding-left: 33px !important;
+    text-overflow: ellipsis !important; /* si es muy largo, muestra '...' */
+    white-space: nowrap !important; /* evita que se corte en varias líneas */
+    text-align: left !important; /* sigue alineado a la izquierda */
+    direction: ltr !important; 
+  }
+  
+}
+
+.calendarst2{
+  .p-datepicker-clear-icon{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%); 
+  }
+
+  &.p-datepicker-input {
+
+  }
+  &:has(.p-datepicker-clear-icon) .p-datepicker-input {
+    padding-left: 33px !important;
+    text-overflow: ellipsis !important; /* si es muy largo, muestra '...' */
+    white-space: nowrap !important; /* evita que se corte en varias líneas */
+    text-align: left !important; /* sigue alineado a la izquierda */
+    direction: ltr !important; 
+  }
+  
+}
+
+
+// .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
+//   padding-inline-end: calc((var(--p-form-field-padding-x) * 2) + var(--p-icon-size));
+// }
+
+
+// ng-tns-c2456691946-6 calendarst1 p-datepicker p-component p-inputwrapper p-inputwrapper-filled

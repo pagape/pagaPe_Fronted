@@ -1,0 +1,268 @@
+.btn-addask{
+
+  &.p-button{
+    height: 40px;
+    color: var(--color-secondary);
+    background: var(--color-white);
+    border: 1px solid var(--color-secondary);
+    border-radius: 16px;
+    padding: 7px 33px;
+  }
+
+}
+
+.btn-primary{
+  background: var(--color-tertiary);
+  height: 40px;
+  border-radius: 10px;
+  padding: 7px 20px;
+  box-shadow: var(--shadow-btn);
+  color: var(--color-white);
+  font-size: var(--font-size-base);
+  border: none !important;
+
+
+  &.p-button{
+    background: var(--color-tertiary);
+    color: var(--color-white);
+    border-radius: 10px;
+    border: none !important;
+    padding: 7px 20px;
+    height: 40px;
+    width: fit-content;
+    max-width: auto;
+  }
+
+  &.w100{
+    width: 100%;
+  }
+
+  &.p-button.w100{
+    width: 100%;
+  }
+}
+
+.btn-whitest{
+  background: var(--color-white);
+  height: 40px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-btn);
+  color: var(--color-tertiary);
+  font-size: var(--font-size-base);
+
+  &.p-button{
+    background: var(--color-white);
+    color: var(--color-tertiary);
+    border-radius: 10px;
+    border: none !important;
+    padding: 7px 20px;
+    height: 40px;
+    width: fit-content;
+    max-width: auto;
+  }
+  &.w100{
+    width: 100%;
+  }
+
+  &.p-button.w100{
+    width: 100%;
+  }
+}
+
+.btn-secondary{
+  background: var(--color-quinary);
+  height: 40px;
+  border-radius: 10px;
+  padding: 7px 20px;
+  box-shadow: var(--shadow-btn);
+  color: var(--color-white);
+  font-size: var(--font-size-base);
+  border: none !important;
+
+
+  &.p-button{
+    background: var(--color-quinary);
+    color: var(--color-white);
+    border-radius: 10px;
+    border: none !important;
+    padding: 7px 20px;
+    height: 40px;
+    width: fit-content;
+    max-width: auto;
+  }
+
+  &.w100{
+    width: 100%;
+  }
+
+  &.p-button.w100{
+    width: 100%;
+  }
+}
+
+.p-button{
+  background: var(--color-quinary);
+  color: var(--color-white);
+}
+
+
+.btnviewfile{
+  &.p-button{
+    background: #DEDEDE;
+    color: var(--color-black);
+  }
+}
+
+.btnviewfile2{
+  height: 40px;
+  border-radius: 10px;
+  padding: 7px 20px;
+  background: #DEDEDE;
+  color: var(--color-white);
+  font-size: var(--font-size-base);
+  border: none !important;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  span, i{
+    color: var(--color-black);
+  }
+
+  i{
+    font-size: 20px;
+  }
+}
+
+.btn-outlinedsecondary{
+  color: #00517D;
+  border: 1px solid #00517D;
+  border-radius: 14px;
+  height: 40px;
+  padding: 20px;
+}
+
+.p-button-text{
+  height: 42px;
+  width: 42px;
+}
+
+.btn-addask{
+
+  &.p-button{
+    height: 40px;
+    color: var(--color-secondary);
+    background: var(--color-white);
+    border: 1px solid var(--color-secondary);
+    border-radius: 16px;
+    padding: 7px 33px;
+  }
+
+}
+
+.btnxclose{
+  i{
+    font-size: 20px;
+    color: var(--color-primary);
+  }
+}
+.colorpr{
+  i{
+    color: var(--color-quinary);
+  }
+  color: var(--color-quinary);
+}
+
+.btncloseview{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 18px 18px 0 0;
+
+  i{
+    font-size: 18px;
+    color: var(--color-primary);
+  }
+}
+
+.btn-additem{
+
+  &.p-button{
+    background: #9FDDFF;
+    color: var(--color-secondary);
+    border-radius: 14px;
+    height: 40px;
+    padding: 20px;
+    border: none;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
+
+    &:hover{
+        background: #9FDDFF;
+        color: var(--color-secondary);
+      ;
+
+    }
+
+  }
+}
+
+.tabstable{
+  .btnstoptabs{
+    .p-button{
+      background: var(--color-secondary);
+      color: var(--color-white);
+      border: none;
+      position: relative;
+      overflow: visible !important;
+    }
+
+    .p-button.p-button-outlined{
+      color: var(--color-secondary);
+      background: var(--color-white);
+      border: 1px solid var(--color-secondary);
+    }
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #3faa43; /* Verde */
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+.tabstable {
+
+  .p-tablist {
+    display: none !important;
+  }
+}
+
+.bktabsmenu{
+  button{
+    color: var(--color-secondary);
+    background: var(--color-white);
+    border: 1px solid var(--color-secondary);
+    padding: 8px 14px;
+    height: 37px;
+    border-radius: 20px;
+    font-size: 16px;
+
+    &.active{
+      background: var(--color-secondary);
+      color: var(--color-white);
+      border: none;
+      position: relative;
+      overflow: visible !important;
+    }
+  }
+}

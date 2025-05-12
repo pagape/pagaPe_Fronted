@@ -1,0 +1,65 @@
+/*==== TABS MENU START ====*/
+
+.bogenetables-tabs {
+  div {
+    // border-radius: 20px;
+    // height: 40px;
+    // padding: 10px 20px;
+    // color: var(--color-white);
+    // background: var(--color-secondary);
+    
+  }
+
+  .p-menubar-item-link{
+    // background-color: var(--color-secondary);
+    // color: var(--color-white);
+    // border-radius: 20px;
+    // padding: 10px 20px;
+    // height: 40px;
+  }
+  .p-menubar-root-list > .p-menubar-item > .p-menubar-item-content{
+    // border: 1px solid var(--color-secondary) ;
+  }
+  
+  .p-menubar-item-content{
+    // border: 1px solid var(--color-secondary) ;
+    // border-radius: 15px;
+  }
+  
+  .p-menubar-item-link{
+    color: var(--color-secondary);
+    border: 1px solid var(--color-secondary) ;
+    border-radius: 20px;
+    height: 40px;
+  }
+  
+  .p-menubar-item-link-active{
+    background: var(--color-secondary);
+    color: var(--color-white);
+  }
+  
+  .p-menubar{
+    background-color: var(--color-white);
+    padding: 0;
+    border: none;
+  }
+
+  .p-menubar-item{
+    border: none;
+  }
+
+  .activeTab {
+    background: var(--color-secondary);
+    color: var(--color-white);
+  }
+
+}
+
+/*==== TABS MENU END ====*/
+
+
+.itemstabs{
+  background: var(--color-white) !important;
+  color: var(--color-secondary) !important;
+  border: 1px solid  var(--color-secondary) !important; ;
+}

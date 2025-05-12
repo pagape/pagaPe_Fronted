@@ -1,0 +1,135 @@
+:root {
+
+    //  colors
+  --color-primary: #00943D;
+  --color-secondary: #009A3F;
+  --color-tertiary: #FF9A00;
+  --color-quaternary: #A0F2C1;
+  --color-quinary:#009B3F;
+
+  --color-strong: #00652A;
+  --color-strongactive: #F39200;
+  --color-accent: #F39017;
+
+  --color-black:#000000;
+  --color-white:#ffffff;
+
+  --color-gray-base:#4E4E4E;
+
+  --color-icon-form:#8B8B8B;
+  --color-border-item:#E4E4E4;
+  --color-bread:#E0E0E0;
+
+    // Colores de fondo
+  --background-body: #F9F9F9;
+  --background-card: #ffffff;
+  --background-dark: #343a40;
+  --background-surface: #ffffff;
+  --background-overlay: rgba(0, 0, 0, 0.5);
+  --background-primary: var(--color-secondary);
+
+
+  // Colores de texto
+  --text-base: var(--color-gray-base);
+  --text-primary:var(--color-primary);
+  --text-secondary: var(--color-secondary);
+
+
+  // --text-muted: #9e9e9e;
+  // --text-light: #ffffff;
+  // --text-dark: #000000;
+  // --text-error: #dc3545;
+  // --text-link: #007bff;
+
+    // Colores de estados y alertas
+  --success: #28a745;
+  --warning: #ffc107;
+  --error: #dc3545;
+  --info: #17a2b8;
+
+  // Colores de interacción
+  --color-hover: rgba(0, 123, 255, 0.8);
+  --color-active: rgba(0, 123, 255, 0.6);
+
+    //  Sizes fonts
+  --font-size-xs: 0.75rem;   // 12px
+  --font-size-sm: 0.875rem;  // 14px
+  --font-size-base: 1rem ;    // 16px
+  --font-size-md: 1.25rem;   // 20px
+  --font-size-lg: 1.5rem;    // 24px
+  --font-size-xl: 2rem;      // 32px
+  --font-size-xxl: 3rem;     // 48px
+
+  --font-size-heading:1.75rem;
+
+  --fweight-light: 300;
+  --fweight-regular: 400;
+  --fweight-medium: 500;
+  --fweight-medium-second: 600;
+  --fweight-bold: 700;
+
+  //  Espaciado base
+  --spacing-xxs: 0.25rem; // 4px
+  --spacing-xs: 0.5rem;   // 8px
+  --spacing-sm: 0.75rem;  // 12px
+  --spacing-md: 1rem;     // 16px
+  --spacing-lg: 1.5rem;   // 24px
+  --spacing-xl: 2rem;     // 32px
+  --spacing-xxl: 3rem;    // 48px
+  --spacing-auto: auto;
+
+  // Margenes y paddings
+  --margin-section: 4rem;   // Margen para secciones
+  --padding-container: 1rem; // Padding general de contenedores
+  --equal-mright:28px;
+
+  // Espaciados de texto - uso opcional
+  --line-height-base: 1.6;
+  --line-height-heading: 1.3;
+  --letter-spacing-tight: -0.05em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.1em;
+
+    // shadow
+  --shadow-card-primary: 0px 4px 8px 0px rgba(0, 0, 0, 0.08);
+  --shadow-btn: 0px 3px 6px 0px rgba(0, 0, 0, 0.16), 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
+
+
+    /* Transiciones suaves */
+
+
+
+  /* == FONTS  ==*/
+  --font-primary: "Roboto", serif;
+
+
+
+  /*========= Reset primeng  =======*/
+
+  --p-tooltip-background:var(--color-white) !important;
+  --p-tooltip-color: #535353!important;
+  --p-tooltip-shadow:0px 4px 4px 0px rgba(0, 0, 0, 0.11) !important;
+
+
+
+  /* == checkbox & switch ==  */
+
+  --p-toggleswitch-transition-duration: 0.3s;
+  --p-toggleswitch-checked-background: #009B3F !important;
+  --p-checkbox-border-color: #4CAF50 !important;
+  // Switch toggle
+  // --p-toggleswitch-height:
+  --p-toggleswitch-width: 3rem !important;
+  --p-toggleswitch-checked-border-color:#00751F;
+  // --p-toggleswitch-handle-background:#4E768C;
+
+
+  /* === calendar datepicker ===*/
+
+  --p-datepicker-input-icon-color: #4CAF50 !important;
+
+
+
+  --p-toast-border-radius: 8px !important
+
+}

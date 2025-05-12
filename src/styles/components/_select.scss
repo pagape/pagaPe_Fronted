@@ -1,0 +1,48 @@
+.p-select{
+  background: var(--color-white) !important;
+}
+
+
+
+.forSurveysel{
+  .p-select{
+
+    width: 220px
+  }
+
+}
+
+.p-iconwrapper{
+  color: var(--color-primary);
+
+}
+
+.disabled .p-iconwrapper{
+
+  color: #A3A3A3 !important; ;
+}
+
+.p-select{
+  height: 40px;
+}
+
+
+.p-select {
+  height: 40px; // ajusta según tu diseño
+  display: flex;
+  align-items: center;
+}
+
+.p-select .p-select-label {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 0.5rem;
+}
+
+.p-select .p-select-trigger {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 0.5rem;
+}

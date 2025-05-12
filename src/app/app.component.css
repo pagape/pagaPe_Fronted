@@ -1,0 +1,30 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; /* Hace que este elemento crezca para llenar el espacio disponible */
+  padding: 16px; /* Opcional, ajusta según tus necesidades */
+  box-sizing: border-box; /* Para manejar el scroll si el contenido es muy grande */
+  z-index: 1; /* Menor que el z-index del header */
+  overflow-y: visible;
+}
+
+footer.dashboard-footer {
+
+  z-index: 1;
+  background-color: #f5f5f5;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 14px;
+  color: #666;
+  position: relative; /* Para evitar problemas de superposición */
+}
+
+main.with-sidebar {
+  margin-left: 80px; /* Ancho del sidebar */
+}
+
+
