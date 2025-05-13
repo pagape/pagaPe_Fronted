@@ -5,11 +5,10 @@ import {HeaderComponent} from "../layout/header/header.component";
 import {SidebarComponent} from "../layout/sidebar/sidebar.component";
 
 @Component({
-  selector: 'app-pages',
-  standalone:true,
-  imports: [RouterOutlet, CommonModule, HeaderComponent, SidebarComponent],
-  templateUrl: './pages.component.html',
-  styleUrl: './pages.component.css'
+    selector: 'app-pages',
+    imports: [RouterOutlet, CommonModule, HeaderComponent, SidebarComponent],
+    templateUrl: './pages.component.html',
+    styleUrl: './pages.component.css'
 })
 export class PagesComponent implements OnInit{
   isPage = false;

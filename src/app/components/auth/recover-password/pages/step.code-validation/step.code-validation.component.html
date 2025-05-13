@@ -1,1 +1,65 @@
-<p>step.code-validation works!</p>
+<div class="uflex-v uflex-center w100">
+
+  <h2 class="heading-st2">¡Ya casi listo!</h2>
+  <p>Coloca tu correo personal el cual enlazaste a tu cuenta</p>
+  <div class="step-icon">
+    <img src="assets/login/code-validation.png" alt="Validación" />
+  </div>
+
+  <form class="step-form uflex-v gap20" #codeForm="ngForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        [(ngModel)]="email"
+        required
+        placeholder="jparez@gmail.com"
+      />
+    </div>
+
+    @if(!codeSent){
+    <button
+      type="button"
+      class="btn-send"
+      (click)="sendCode()"
+      [disabled]="!codeForm.controls['email']?.valid"
+    >
+      <i class="material-symbols-outlined">send</i> Enviar código
+    </button>}
+
+    @if(codeSent){
+    <div  class="code-verification-section">
+
+
+      <p class="note">{{messageR}}</p>
+
+      <div class="form-group uflex-v gap20">
+        <label for="code">Clave</label>
+        <input
+          id="code"
+          name="code"
+          type="text"
+          maxlength="6"
+          [(ngModel)]="code"
+          placeholder="000000"
+        />
+        <small class="note">*Código enviado a tu correo</small>
+
+        <button
+        type="button"
+        class="btn-validate w100"
+        (click)="validateCode()"
+      >
+        <i class="material-symbols-outlined">mark_email_read</i> Validar código
+      </button>
+
+      @if(message!=''){
+    <small class="note">{{message}}</small>
+    }
+      </div>
+    </div>}
+  </form>
+
+</div>

@@ -13,8 +13,8 @@
         </div>
         <button type="submit">Ingresar</button>
         <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-        <div class=" ">
-          <a routerLink="/recover-password" class="text-secondary center-content recovery">
+        <div class=" " (click)="recoveryProccess()">
+          <a  class="text-secondary center-content recovery">
             Recuperar Contraseña
           </a>  </div>
       </form>

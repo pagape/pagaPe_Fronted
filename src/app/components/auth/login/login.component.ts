@@ -3,25 +3,28 @@ import {FormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
 import {CommonModule} from "@angular/common";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {RecoverPasswordComponent} from "../recover-password/recover-password.component";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    FormsModule,
-    RouterLink,
-    CommonModule
-  ],
-  providers: [AuthService],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [
+        FormsModule,
+        RouterLink,
+        CommonModule
+    ],
+    providers: [AuthService, DialogService],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
   username : string = " ";
   password: string= " ";
 
   errorMessage: string | null = null;
-  constructor(private router: Router,private authService: AuthService) {}
+
+  ref: DynamicDialogRef | undefined;
+  constructor(private router: Router,private authService: AuthService, public dialogService: DialogService) {}
 
   onLogin() {
     if (this.username && this.password) {
@@ -49,7 +52,22 @@ export class LoginComponent {
 
   recoveryProccess() {
 
-    this.router.navigate(['/recover-password']);
+
+    const ref = this.dialogService.open(RecoverPasswordComponent, {
+
+
+      modal: true,
+      dismissableMask: true,
+    });
+    ref.onClose.subscribe(result => {
+      if (result) {
+        console.log(result);
+
+      } else {
+        console.log('modal cerrado');
+      }
+    });
+
   }
 
 }

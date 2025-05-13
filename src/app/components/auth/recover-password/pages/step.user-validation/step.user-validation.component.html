@@ -1,1 +1,44 @@
-<p>step.user-validation works!</p>
+<div class="uflex-v uflex-center w100">
+
+<h2 class="heading-st2">Comencemos</h2>
+<p>Coloca tus datos personales para validarlos.</p>
+<div class="step-icon">
+  <img src="assets/login/user-validation.png" alt="Validación" />
+</div>
+
+<form class=" uflex-v gap20 " #userForm="ngForm">
+  <div class="form-group">
+    <label for="fullName">Nombres y apellidos</label>
+    <input
+      id="fullName"
+      name="fullName"
+      type="text"
+      [(ngModel)]="fullName"
+      required
+      placeholder="Escribe"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="dni">DNI</label>
+    <input
+      id="dni"
+      name="dni"
+      type="number"
+      [(ngModel)]="dni"
+      maxlength="8"
+      pattern="^[0-9]{1,8}$"
+      required
+      placeholder="Escribe"
+    />
+    @if(dni && dni.length > 7){
+    <span  >
+      El DNI no debe exceder 7 dígitos
+    </span>}
+  </div>
+
+  <button type="button" class="btn-validate" (click)="onValidate()" [disabled]="!userForm.valid">
+    <i class="material-symbols-outlined">person_search</i> Validar
+  </button>
+</form>
+</div>
