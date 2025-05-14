@@ -7,17 +7,22 @@ export const PAGES_ROUTES: Routes = [
     path: '',
     component: PagesComponent,
     children: [
-      // {
-      //   path: '',
-      //   loadComponent: () =>
-      //     import('./home/home.component').then(c => c.HomeComponent),
-      // },
-      // {
-      //   path: 'customer',
-      //   loadChildren: () =>
-      //     import('./customer/customer.routes').then(c => c.CUSTOMER_ROUTES),
-      // },
-      //
+      {
+        path: '',
+        loadComponent: () =>
+          import('./home/home.component').then(c => c.HomeComponent),
+      },
+      {
+        path: 'report',
+        loadChildren: () =>
+          import('./report/report.routes').then(c => c.REPORT_ROUTES),
+      },
+      {
+        path: 'operation',
+        loadChildren: () =>
+          import('./operation/operation.routes').then(c => c.OPERATION_ROUTES),
+      },
+
     ],
   },
 ];

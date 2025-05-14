@@ -1,0 +1,36 @@
+p-inputnumber{
+
+  height: 48px !important;
+  text-align: center ;
+  font-size: 16px;
+
+}
+
+
+::ng-deep input#peso.p-inputtext.p-component.p-inputnumber-input {
+  height: 48px;
+  text-align: center ;
+}
+
+input{
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1;
+}
+
+
+
+.modal-container{
+  text-align: start;
+}
+
+textarea{
+
+  border: 1px solid #AFA7A7B2;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: "Roboto", serif;
+}
+

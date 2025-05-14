@@ -1,0 +1,41 @@
+i{
+
+  color: #FF9A00;
+  padding: 3px;
+ zoom: 3;
+}
+
+
+.btn-primary i {
+  color: white;
+  padding-left: 0!important;
+
+  font-size: 8px;
+}
+
+.btn-whitest i{
+  padding-left: 0!important;
+  font-size: 8px;
+
+}
+
+ul{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+li{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 15px;
+
+  strong{
+    text-align: right;
+  }
+
+  span{
+    text-align: left;
+  }
+}

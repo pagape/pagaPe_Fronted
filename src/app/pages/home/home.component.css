@@ -1,0 +1,32 @@
+p-date-picker{
+  display: flex;
+  padding: 10px;
+  width: 300px !important;
+
+  & span {
+    & input {
+
+      width: 300px;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+  }
+  & calendaricon {
+
+    color: #00B94C;
+    margin-right: 10px;
+  }
+}
+
+.p-date-picker-input-icon-container{
+
+  color: #00B94C;
+  margin-right: 10px;
+}
+
+.search{
+
+  width: 400px;
+  background-color: #F9F9F9;
+  padding-left: 20px;
+}

@@ -1,0 +1,26 @@
+<div class="bogenetables">
+  <div class="">
+    <div class="uflex uflex-jbtw mb20 ststylecont">
+      <h2 class="headingst">Mis recordatorios</h2>
+
+      <div class="uflex-v gap25 aiend uflex-jend">
+      <button class="uflex-center gap5 btn-primary mrequal"
+              type="button" pButton pRipple (click)="create()" ><i class="material-symbols-outlined">add_diamond</i>Nuevo</button>
+
+      <div class="uflex gap10 aicenter" >
+        <label for="daterange">Fecha registro</label>
+        <p-date-picker [(ngModel)]="dateRange" selectionMode="range" inputId="daterange" dateFormat="dd/mm/yy"
+                       placeholder="Elige fecha inicio y fecha fin" showIcon="true"></p-date-picker>
+
+      </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div>
+    <app-table [columns]="columns" [data]="data" [actions]="actions"
+    >
+    </app-table>
+  </div>
+</div>

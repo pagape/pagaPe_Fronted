@@ -1,0 +1,77 @@
+
+<div class="modal-container">
+  <div class="modal-header uflex uflex-jbtw">
+
+    <h2 class="headingst">Crear recordatorio</h2>
+
+
+  </div>
+  <div class="modal-body">
+
+    <div class="uflex-v gap30  w100">
+
+      <div class="uflex-v gap10 ">
+        <label for="name" class="fw-bold">Nombre</label>
+        <input type="text"  id="name" [(ngModel)]="name" placeholder="Escribe"/>
+      </div>
+
+
+      <div class="uflex-v gap10 ">
+        <label for="service" class="fw-bold">Tipo de servicio: </label>
+        <p-select id="service" placeholder=""
+                  [options]="services" [(ngModel)]="serviceSelected" >
+        </p-select>
+      </div>
+
+      <div class="uflex-v gap10 ">
+        <label for="whats" class="fw-bold">Numero de Whatssapp: </label>
+        <p-select id="whats" placeholder=""
+                  [options]="numbers" [(ngModel)]="numberSelected" >
+        </p-select>
+      </div>
+
+
+      <div class="uflex aicenter uflex-center gap30">
+      @for(option of options; track option){
+        <div class="uflex-center uflex gap10">
+          <p-radiobutton [inputId]="option.key" name="option" [value]="option.key" [(ngModel)]="selectedOption"></p-radiobutton>
+          <label [for]="option.key" class="ml-2">{{ option.name }}</label>
+        </div>
+        }
+
+    </div>
+      <div class="uflex-v gap10 column ">
+
+        <label class="font-bold block mb-2" for="peso">
+          Cantidad de dias
+        </label>
+        <p-inputnumber [(ngModel)]="peso"  [showButtons]="true" buttonLayout="horizontal" inputId="peso" spinnerMode="horizontal" [step]="1.0" ></p-inputnumber>
+
+      </div>
+
+      <div class="uflex-v gap10  ">
+
+        <label  class="font-bold block mb-2"> Descripción </label>
+        <textarea  rows="7"  id="mercaderia" [(ngModel)]="desc" placeholder="Escribe"></textarea>
+        <span>*Máximo 50 caracteres</span>
+
+
+      </div>
+
+
+        <div class="uflex uflex-center gap30 w100 ">
+          <button class="btn-primary uflex uflex-center" (click)="guardar()">
+            <i class="material-symbols-outlined">post_add</i> Guardar
+          </button>
+          <button class="btn-whitest uflex uflex-center" (click)="cancelar()">
+            <i class="material-symbols-outlined">cancel</i> Cancelar
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+

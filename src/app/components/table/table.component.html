@@ -1,0 +1,179 @@
+<div class="utablecont">
+  <p-table
+  [value]="data"
+  styleClass="utable"
+  [paginator]="true"
+  [lazy]="true"
+  [rows]="rowsPerPage"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  [totalRecords]="totalRecords"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortOrder]="sortOrder"
+  paginatorDropdownAppendTo="body"
+  (onPage)="onPageChange($event)">
+    <ng-template pTemplate="header">
+      <tr>
+        @for (col of columns; track col) {
+        <th [ngClass]="{'txt-center': col.type === 'actions' || col.type ==='checkbox'}">
+          {{ col.header }}
+        </th>
+        }
+        <!--<th class="txt-center ">Acciones</th>-->
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rowData>
+      <tr>
+        @for (col of columns; track col) {
+        <td>
+
+          @if (!col.type && col.tooltipText) {
+          <span [pTooltip]="rowData.note" tooltipPosition="top" [title]="rowData?.[col?.title!]">{{ rowData[col.field] }}</span>
+          } @else if(!col.type ){
+          <span>{{ rowData[col.field] }}</span>
+          }
+
+          @if (col.type === 'tag') {
+            @if(col.icon!=null){
+
+        <i class="material-symbols-outlined icon uflex-center"  [ngClass]="{ 'agree': rowData.state!=false }" >
+        {{
+        typeof col.icon === 'function'
+          ? col.icon(rowData)
+          : rowData[col.icon]
+        }}
+        </i>
+            }
+
+            @else if(col.icon==null) {
+               @if(rowData.state==false || rowData.state=='P' ){
+                    <strong class="tagP ">
+                      <span> {{ rowData[col.field] }}</span>
+                    </strong>}
+        @else if(rowData.state=='U' ){
+        <strong class="tagU">
+          <span> {{ rowData[col.field] }}</span>
+        </strong>
+        } @else if(rowData.state=='R' ){
+        <strong class="tagR">
+          <span> {{ rowData[col.field] }}</span>
+        </strong>
+        }
+              @else {
+                    <strong class="tag utag">
+                      <span> {{ rowData[col.field] }}</span>
+                    </strong>
+                    }
+            }
+        }
+
+        @if (col.type === 'datetime') {
+          {{ rowData[col.field] |  date : "dd/MM/yyyy HH:mm:ss" }}
+        }
+
+        @if (col.type === 'date') {
+          {{ rowData[col.field] |  date : "dd/MM/yyyy" }}
+        }
+
+        @if (col.type === 'checkbox') {
+          <div class="uflex-center">
+            <p-checkbox
+            [inputId]="'permission-' + rowData.id"
+            name="group"
+            [binary]="true"
+            [(ngModel)]="rowData[col.field]"
+            (onChange)="checkboxChange.emit({ row: rowData, checked: rowData[col.field] })">
+          </p-checkbox>
+          </div>
+        }
+
+        <!--
+          @if (col.type === 'checkbox') {
+          <div class="uflex-center">
+            <p-checkbox [inputId]="'permission-' + col.field" name="'group" [value]="col.value"></p-checkbox>
+          </div>
+          }-->
+
+
+          @if (col.type === 'actions') {
+            <div class="uflex-center btntable ">
+              @for (action of col.actions; track action) {
+                @if (action.icon === 'slow_motion_video' && rowData.publish === 1) {
+                  <!-- No se renderiza el botón si publish es 1 -->
+                }
+
+                @else if ((action.state == undefined || action.state == 0) && (rowData.state==1 || rowData.state=='A'|| rowData.state=='P')) {
+                  <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
+                          [ngClass]="{'disabled-btn': (rowData.door=='-' && action.pending==true) }"
+                  >
+                    <i class="material-symbols-outlined">{{ action.icon }}</i>
+                  </button>
+                }
+                @else if ((action.state == undefined || action.state == 1) && (rowData.state==0 || rowData.state=='U'||rowData.state=='V'||rowData.state=='R')) {
+                  @if (action.icon !== 'slow_motion_video') {
+                    <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
+                    [ngClass]="{'disabled-btn': (rowData.door=='-' && action.pending==true) }"
+                    >
+                      <i class="material-symbols-outlined">{{ action.icon }}</i>
+                    </button>
+                  }
+                }
+              }
+            </div>
+        }
+
+
+          <!-- oculte esto para que me oculte l oque no quiero mostrar
+          @if (col.type === 'actions') {
+          <div class="uflex-center btntable ">
+            @for (action of col.actions; track action) {
+             @if((action.state== undefined || action.state==0) &&  (rowData.state==1 || rowData.state=='A')){
+              <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
+                      [ngClass]="{'disabled-btn': rowData.door=='-' }"
+              >
+                <i class="material-symbols-outlined">{{ action.icon }}</i>
+              </button>
+             }
+             @else if((action.state== undefined || action.state==1) && (rowData.state==0 || rowData.state=='U')){
+              <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
+                      class="disabled-btn"
+              >
+                <i class="material-symbols-outlined disabled-btn">{{ action.icon }}</i>
+              </button>
+             }
+            }
+          </div>
+        } -->
+
+
+
+
+       <!--
+          @if (col.type === 'actions') {
+            <div class="uflex-center btntable">
+              @for (action of col.actions; track action) {
+                @if (action.icon === 'slow_motion_video' && rowData.publish !== 0) {
+
+                } @else {
+                  <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
+                  [disabled]="action.status !== rowData.status"
+                  [ngClass]="{'enabled-btn': action.status === rowData.status, 'disabled-btn': action.status !== rowData.status}">
+                  <i class="material-symbols-outlined">{{ action.icon }}</i>
+                </button>
+                }
+              }
+            </div>
+          }
+        -->
+        </td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+<!--  @if (showPaginator) {-->
+<!--  <p-paginator [rows]="rowsPerPage" [totalRecords]="data.length" [rowsPerPageOptions]="[5, 10, 20]"-->
+<!--    (onPageChange)="onPageChange($event)">-->
+<!--  </p-paginator>-->
+<!--  &lt;!&ndash; currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" &ndash;&gt;-->
+<!--  }-->
+</div>

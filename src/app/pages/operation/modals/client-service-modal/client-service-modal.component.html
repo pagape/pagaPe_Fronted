@@ -1,0 +1,67 @@
+
+<div class="modal-container">
+  <div class="modal-header uflex uflex-jbtw">
+
+    <h2 class="headingst"> {{config.data}} servicio de cliente</h2>
+
+
+  </div>
+  <div class="modal-body">
+
+    <div class="uflex-v gap30  w100">
+
+      <div class="uflex-v gap10 ">
+        <label for="name" class="fw-bold">Cliente</label>
+        <input type="text"  id="name" [(ngModel)]="name" placeholder="Escribe"/>
+      </div>
+
+
+      <div class="uflex-v gap10 ">
+        <label for="service" class="fw-bold">Tipo de servicio: </label>
+        <p-select id="service" placeholder=""
+                  [options]="services" [(ngModel)]="serviceSelected" >
+        </p-select>
+      </div>
+
+      <div class="uflex-v gap10 w100" >
+        <label for="daterange">Fecha registro</label>
+        <p-date-picker [(ngModel)]="dateRange" selectionMode="range" inputId="daterange" dateFormat="dd/mm/yy"
+                       placeholder="Elige fecha inicio y fecha fin" showIcon="true"></p-date-picker>
+
+      </div>
+
+      <div class="uflex-v gap10 ">
+        <label for="whats" class="fw-bold">Periodicidad de pago: </label>
+        <p-select id="whats" placeholder=""
+                  [options]="payments" [(ngModel)]="paymentSelected" >
+        </p-select>
+      </div>
+
+
+
+      <div class="uflex-v gap10 column ">
+
+        <label class="font-bold block mb-2" for="peso">
+          Monto
+        </label>
+        <p-inputnumber [(ngModel)]="peso"   buttonLayout="horizontal" inputId="peso" mode="currency" currency="PEN" locale="esp-LAA" ></p-inputnumber>
+
+      </div>
+
+
+      <div class="uflex uflex-center gap30 w100 ">
+        <button class="btn-primary uflex uflex-center" (click)="guardar()">
+          <i class="material-symbols-outlined">post_add</i> Guardar
+        </button>
+        <button class="btn-whitest uflex uflex-center" (click)="cancelar()">
+          <i class="material-symbols-outlined">cancel</i> Cancelar
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+

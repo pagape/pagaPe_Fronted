@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <i class="material-symbols-outlined ">warning</i>
+</div>
+<div class="modal-body mb30">
+
+  @if(config.data.detailsCupo){
+  <p class="txt-bold txt-center">{{config.data.detailsCupo.title}}</p>
+  }
+  @else if(message === undefined || message === ''){
+  <p>¿Está seguro de realizar esta operación?</p>
+  }
+  @else {
+     {{message}}
+  }
+
+  <div class="uflex-v  gap20">
+
+    @if(config.data.detailsCupo?.end) {
+    <p><strong>Cliente:</strong> {{ config.data.detailsCupo.start }}</p>
+    <p><strong>Servicio:</strong> {{config.data.detailsCupo.end }}</p>}
+    @else if(config.data.detailsCupo){
+    <p><strong>Cliente:</strong> {{ config.data.detailsCupo.start }}</p>
+
+    }
+
+  </div>
+
+</div>
+<div class="uflex-center gap20">
+  <button class="btn-primary uflex uflex-center" (click)="accept()">
+    <i class="material-symbols-outlined">check_circle</i>Aceptar</button>
+  <button class="btn-whitest uflex uflex-center" (click)="cancel()">
+    <i class="material-symbols-outlined">cancel</i>Cancelar</button>
+</div>
+

@@ -26,7 +26,7 @@ export class LoginComponent {
   ref: DynamicDialogRef | undefined;
   constructor(private router: Router,private authService: AuthService, public dialogService: DialogService) {}
 
-  onLogin() {
+  onLogin1() {
     if (this.username && this.password) {
       this.authService
         .login({ userEmail: this.username, userPassword: this.password })
@@ -34,13 +34,18 @@ export class LoginComponent {
           next: (response) => {
             // Guardar tokens
             this.authService.saveTokens(response);
-            this.router.navigate(['/main/dashboard']);
+            this.router.navigate(['/main']);
           },
           error: () => {
             this.errorMessage = 'Credenciales incorrectas. Por favor, intenta de nuevo.';
           },
         });
     }
+  }
+  onLogin(){
+
+    this.router.navigate(['/main']);
+
   }
 
 
