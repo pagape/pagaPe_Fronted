@@ -43,10 +43,9 @@ export class UserService {
     return this.http.put<UserInfo>(`${this.apiUrl}/${userId}`, user, { headers });
   }
 
-  // Eliminar un usuario por ID
   deleteUser(userId: number): Observable<void> {
     const headers = this.getAuthHeaders();
-    return this.http.delete<void>(`${this.apiUrl}/${userId}`, { headers });
+    return this.http.patch<void>(`${this.apiUrl}/${userId}`, {},{ headers });
   }
 
   validateUser(firstName: string, lastName: string, dni: string): Observable<any> {

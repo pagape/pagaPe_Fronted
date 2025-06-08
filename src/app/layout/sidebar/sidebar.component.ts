@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {NgClass} from "@angular/common";
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
     selector: 'app-sidebar',
@@ -9,9 +10,19 @@ import {Router} from "@angular/router";
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent   {
   isSidebarOpen = false;
   selectedMenu = '';
+
+  @Input() role:any;
+ // role:string=this.authService.getUser().role;
+  constructor(
+
+    private router: Router
+  ) {
+
+
+  }
 
   resource = {
     id: 1,
@@ -24,6 +35,7 @@ export class SidebarComponent {
     { label: 'Inicio', icon: 'home', url: '/main' },
     { label: 'Reportes', icon: 'description', url: '/main/report' },
     { label: 'Operaciones', icon: 'work', url: '/main/operation' },
+    { label: 'Usuarios', icon: 'contacts', url: '/main/user-management', restricted:true },
 
     // { label: 'Seguridad', icon: 'verified_user', url: '/security' },
     // { label: 'Acceso', icon: 'lock' },
@@ -31,10 +43,7 @@ export class SidebarComponent {
     // { label: 'Administración', icon: 'settings' },
   ];
 
-  constructor(
 
-    private router: Router,
-  ) {}
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -45,4 +54,6 @@ export class SidebarComponent {
     this.router.navigate([`${item.url}`]);
     //this.openDynamicDialog();
   }
+
 }
+
