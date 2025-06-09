@@ -59,8 +59,9 @@ export class HomeComponent {
   ];
   ref: DynamicDialogRef | undefined;
 
-  constructor(private router:Router, public dialogService: DialogService,private route: ActivatedRoute) {
+  constructor(private router:Router, private authService: AuthService,public dialogService: DialogService,private route: ActivatedRoute) {
 
+    console.log(this.authService.getUser())
   }
 
   private onBalance(row: any) {

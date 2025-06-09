@@ -5,6 +5,7 @@ import {AuthService} from "../../../services/auth.service";
 import {CommonModule} from "@angular/common";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {RecoverPasswordComponent} from "../recover-password/recover-password.component";
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
     selector: 'app-login',
@@ -24,9 +25,9 @@ export class LoginComponent {
   errorMessage: string | null = null;
 
   ref: DynamicDialogRef | undefined;
-  constructor(private router: Router,private authService: AuthService, public dialogService: DialogService) {}
+  constructor(private router: Router,private authService: AuthService, private userService:UserService,public dialogService: DialogService) {}
 
-  onLogin1() {
+  onLogin() {
     if (this.username && this.password) {
       this.authService
         .login({ userEmail: this.username, userPassword: this.password })
@@ -35,14 +36,16 @@ export class LoginComponent {
             // Guardar tokens
             this.authService.saveTokens(response);
             this.router.navigate(['/main']);
+
           },
           error: () => {
             this.errorMessage = 'Credenciales incorrectas. Por favor, intenta de nuevo.';
           },
         });
     }
+
   }
-  onLogin(){
+  onLogin1(){
 
     this.router.navigate(['/main']);
 
