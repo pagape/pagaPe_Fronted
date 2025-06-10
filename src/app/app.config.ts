@@ -3,7 +3,7 @@ import {provideRouter, withComponentInputBinding} from '@angular/router';
 
 import { routes } from './app.routes';
 import {AuthService} from "./services/auth.service";
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {providePrimeNG} from "primeng/config";
 import {ToastModule} from "primeng/toast";
@@ -13,7 +13,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import Aura from '@primeng/themes/aura';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),provideHttpClient(),
+  providers: [provideRouter(routes),provideHttpClient(withInterceptorsFromDi()),
     provideCharts(withDefaultRegisterables()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
@@ -30,5 +30,7 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     importProvidersFrom(ToastModule),
-    MessageService,]
+    MessageService,
+    AuthService
+  ]
 };
