@@ -1,0 +1,56 @@
+p-inputnumber{
+
+  height: 48px !important;
+  text-align: center ;
+  font-size: 16px;
+
+}
+
+
+::ng-deep input#peso.p-inputtext.p-component.p-inputnumber-input {
+  height: 48px;
+  text-align: center ;
+}
+
+input{
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1;
+}
+
+
+
+.modal-container{
+  text-align: start;
+}
+
+p-date-picker{
+  display: flex
+;
+  padding: 10px 0;
+  width: 100% !important;
+
+  & span {
+    & input {
+
+      width: 100% !important;
+      font-size: 14px;
+    }
+  }
+  & calendaricon {
+
+    color: #00B94C;
+    margin-right: 10px;
+  }
+}
+p-date-picker input{
+
+  width: 100%!important;
+}
+
+.p-date-picker-input-icon-container{
+
+  color: #00B94C;
+  margin-right: 10px;
+}

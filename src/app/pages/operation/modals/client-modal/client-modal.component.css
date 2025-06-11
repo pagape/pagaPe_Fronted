@@ -1,11 +1,8 @@
 p-inputnumber{
-
   height: 48px !important;
   text-align: center ;
   font-size: 16px;
-
 }
-
 
 ::ng-deep input#peso.p-inputtext.p-component.p-inputnumber-input {
   height: 48px;
@@ -19,8 +16,20 @@ input{
   border: 1px solid #cbd5e1;
 }
 
-
-
 .modal-container{
   text-align: start;
+}
+
+.error-message {
+  background-color: #ffeded;
+  border: 1px solid #f5c2c7;
+  color: #842029;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }

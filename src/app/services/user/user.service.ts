@@ -9,7 +9,7 @@ import {UserInfo} from "../../models/user/user";
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8083/api/pagaPe/v1/users'; // URL de tu API
+  private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/users'; // URL de tu API
 
 
   constructor(private http: HttpClient) {
@@ -43,10 +43,9 @@ export class UserService {
     return this.http.put<UserInfo>(`${this.apiUrl}/${userId}`, user, { headers });
   }
 
-  // Eliminar un usuario por ID
   deleteUser(userId: number): Observable<void> {
     const headers = this.getAuthHeaders();
-    return this.http.delete<void>(`${this.apiUrl}/${userId}`, { headers });
+    return this.http.patch<void>(`${this.apiUrl}/${userId}`, {},{ headers });
   }
 
   validateUser(firstName: string, lastName: string, dni: string): Observable<any> {

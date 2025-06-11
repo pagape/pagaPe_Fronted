@@ -25,9 +25,13 @@ export const OPERATION_ROUTES: Routes = [
             (c) => c.ListClientServicesComponent
           ),
       },
-
-
+      {
+        path: 'client-history/:id',
+        loadComponent: () =>
+          import('./client-history/client-history.component').then(
+            (c) => c.ClientHistoryComponent
+          ),
+      }
     ]
-
   }
 ]
