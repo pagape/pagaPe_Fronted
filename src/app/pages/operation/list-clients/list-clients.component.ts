@@ -18,12 +18,12 @@ import { ToastModule } from "primeng/toast";
 @Component({
   selector: 'app-list-clients',
   imports: [
-    CommonModule, 
-    FormsModule, 
-    SelectModule, 
-    DatePickerModule, 
-    InputTextModule, 
-    ButtonModule, 
+    CommonModule,
+    FormsModule,
+    SelectModule,
+    DatePickerModule,
+    InputTextModule,
+    ButtonModule,
     TableComponent,
     ToastModule
   ],
@@ -67,8 +67,8 @@ export class ListClientsComponent implements OnInit {
   serviceSelected: any = null;
 
   constructor(
-    private router: Router, 
-    public dialogService: DialogService, 
+    private router: Router,
+    public dialogService: DialogService,
     private route: ActivatedRoute,
     private clientService: ClientService,
     private messageService: MessageService
@@ -106,7 +106,7 @@ export class ListClientsComponent implements OnInit {
       modal: true,
       dismissableMask: true,
     });
-    
+
     ref.onClose.subscribe(result => {
       if (result && result.success) {
         this.messageService.add({
@@ -130,7 +130,7 @@ export class ListClientsComponent implements OnInit {
       modal: true,
       dismissableMask: true,
     });
-    
+
     ref.onClose.subscribe(result => {
       if (result && result.success) {
         this.messageService.add({
@@ -142,7 +142,6 @@ export class ListClientsComponent implements OnInit {
       }
     });
   }
-
   onDelete(row: any) {
     const ref = this.dialogService.open(ConfirmModalComponent, {
       data: {
@@ -159,25 +158,34 @@ export class ListClientsComponent implements OnInit {
     ref.onClose.subscribe((confirmed) => {
       if (confirmed) {
         this.clientService.deleteClient(row.id).subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Cliente eliminado correctamente'
-            });
-            this.loadClients();
+          next: (response) => {
+            if (response && response.success) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Cliente eliminado correctamente'
+              });
+              this.loadClients();
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se pudo eliminar el cliente, por favor intente nuevamente.'
+              });
+            }
           },
           error: (error) => {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'No se pudo eliminar el cliente'
+              detail: `No se pudo eliminar el cliente: ${error.message || 'error desconocido'}`,
             });
           }
         });
       }
     });
   }
+
 
   viewHistory(row: any) {
     this.router.navigate(['/operation/client-history', row.id]);
