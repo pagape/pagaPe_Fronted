@@ -113,6 +113,7 @@ export class ListClientServicesComponent {
 
   }
 
+  //
   onDelete(row: any) {
     const ref = this.dialogService.open(ConfirmModalComponent, {
       data: {
