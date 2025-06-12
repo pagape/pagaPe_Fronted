@@ -186,7 +186,6 @@ export class ListClientsComponent implements OnInit {
       }
     });
   }
-
   onDelete(row: any) {
     const ref = this.dialogService.open(ConfirmModalComponent, {
       data: {
@@ -203,25 +202,34 @@ export class ListClientsComponent implements OnInit {
     ref.onClose.subscribe((confirmed) => {
       if (confirmed) {
         this.clientService.deleteClient(row.id).subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Cliente eliminado correctamente'
-            });
-            this.loadClients();
+          next: (response) => {
+            if (response && response.success) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Cliente eliminado correctamente'
+              });
+              this.loadClients();
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se pudo eliminar el cliente, por favor intente nuevamente.'
+              });
+            }
           },
           error: (error) => {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'No se pudo eliminar el cliente'
+              detail: `No se pudo eliminar el cliente: ${error.message || 'error desconocido'}`,
             });
           }
         });
       }
     });
   }
+
 
   viewHistory(row: any) {
     this.router.navigate(['/operation/client-history', row.id]);
