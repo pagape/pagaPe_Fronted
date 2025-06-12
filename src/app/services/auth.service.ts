@@ -12,8 +12,8 @@ export interface AuthenticationResponse {
 })
 export class AuthService {
 
- // private baseUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/auth'; // Cambia la URL según tu backend
-  private baseUrl = 'http://localhost:8083/api/pagaPe/v1/auth'; // Cambia la URL según tu backend
+  private baseUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/auth'; // Cambia la URL según tu backend
+  //private baseUrl = 'http://localhost:8083/api/pagaPe/v1/auth'; // Cambia la URL según tu backend
 
 
   private user: any;
