@@ -7,8 +7,9 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ClientService {
-  private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/clients';
+  //private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/clients';
 
+  private apiUrl = 'http://localhost:8083/api/clients';
   constructor(private http: HttpClient) {}
 
   getAuthHeaders(): HttpHeaders {
@@ -64,7 +65,7 @@ export class ClientService {
   // Manejo de errores
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
@@ -76,13 +77,13 @@ export class ClientService {
           message: error.error.message || 'Ya existe otro cliente con este número de teléfono'
         }));
       }
-      
+
       errorMessage = `Código: ${error.status}, Mensaje: ${error.message}`;
     }
-    
+
     return throwError(() => ({
       status: error.status,
       message: errorMessage
     }));
   }
-} 
+}

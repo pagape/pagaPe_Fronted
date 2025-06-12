@@ -14,18 +14,20 @@ import { ClientService } from "../../../services/client.service";
 import { Client } from "../../../models/client.model";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
+import {ToggleSwitchModule} from "primeng/toggleswitch";
 
 @Component({
   selector: 'app-list-clients',
   imports: [
-    CommonModule, 
-    FormsModule, 
-    SelectModule, 
-    DatePickerModule, 
-    InputTextModule, 
-    ButtonModule, 
+    CommonModule,
+    FormsModule,
+    SelectModule,
+    DatePickerModule,
+    InputTextModule,
+    ButtonModule,
     TableComponent,
-    ToastModule
+    ToastModule,
+    ToggleSwitchModule
   ],
   templateUrl: './list-clients.component.html',
   styleUrl: './list-clients.component.css',
@@ -35,21 +37,31 @@ export class ListClientsComponent implements OnInit {
   searchText: string = '';
   dateRange: Date[] | undefined;
   isLoading: boolean = false;
-  clients: Client[] = [];
+  allClients: Client[] = [];
+
+  // Estos son los datos filtrados que envías al app-table
+  data: Client[] = [];
+
+  status: boolean = false;
 
   actions = [
     { icon: 'edit_square', action: (row: any) => this.onEdit(row) },
     { icon: 'delete_forever', action: (row: any) => this.onDelete(row) },
-    { icon: 'history', action: (row: any) => this.viewHistory(row) }
   ];
 
   columns = [
     { field: 'id', header: 'Id' },
     { field: 'userFirstName', header: 'Nombre' },
     { field: 'userLastName', header: 'Apellido' },
-    { field: 'createdAt', header: 'Fecha de registro' },
+    { field: 'created', header: 'Fecha de registro' },
     { field: 'userEmail', header: 'Correo' },
     { field: 'userPhone', header: 'Número' },
+    {
+      field: 'active',
+      header: 'Estado',
+      type: 'tag',
+      colorMap: { Activo: 'green', Inactivo: 'red', Pendiente: 'orange' },
+    },
     {
       field: 'actions',
       header: 'Opciones',
@@ -58,7 +70,6 @@ export class ListClientsComponent implements OnInit {
     },
   ];
 
-  data: Client[] = [];
   ref: DynamicDialogRef | undefined;
   services: any[] = [
     'Telefonia', 'Internet', 'TV'
@@ -67,8 +78,8 @@ export class ListClientsComponent implements OnInit {
   serviceSelected: any = null;
 
   constructor(
-    private router: Router, 
-    public dialogService: DialogService, 
+    private router: Router,
+    public dialogService: DialogService,
     private route: ActivatedRoute,
     private clientService: ClientService,
     private messageService: MessageService
@@ -82,7 +93,8 @@ export class ListClientsComponent implements OnInit {
     this.isLoading = true;
     this.clientService.getAllClients().subscribe({
       next: (clients) => {
-        this.data = clients;
+        this.allClients = clients;  // cargamos copia original
+        this.data = [...this.allClients];
         this.isLoading = false;
       },
       error: (error) => {
@@ -96,6 +108,38 @@ export class ListClientsComponent implements OnInit {
     });
   }
 
+  applyFilters() {
+    let filtered = [...this.allClients];
+
+
+    if (this.searchText) {
+      const search = this.searchText.toLowerCase();
+      filtered = filtered.filter(item =>
+        item.userFirstName.toLowerCase().includes(search) ||
+        item.userLastName.toLowerCase().includes(search) ||
+        item.userEmail.toLowerCase().includes(search) ||
+        item.userPhone.toLowerCase().includes(search)
+      );
+    }
+
+
+    if (this.dateRange?.length === 2) {
+      const [start, end] = this.dateRange;
+      filtered = filtered.filter(item => {
+        const createdDate = new Date(item.created);
+        return createdDate >= start && createdDate <= end;
+      });
+    }
+
+
+    if (this.status !== null) {
+      filtered = filtered.filter(item => item.active === this.status);
+    }
+
+    this.data = filtered;
+  }
+
+
   create() {
     const ref = this.dialogService.open(ClientModalComponent, {
       data: {
@@ -106,7 +150,7 @@ export class ListClientsComponent implements OnInit {
       modal: true,
       dismissableMask: true,
     });
-    
+
     ref.onClose.subscribe(result => {
       if (result && result.success) {
         this.messageService.add({
@@ -130,7 +174,7 @@ export class ListClientsComponent implements OnInit {
       modal: true,
       dismissableMask: true,
     });
-    
+
     ref.onClose.subscribe(result => {
       if (result && result.success) {
         this.messageService.add({
@@ -182,4 +226,6 @@ export class ListClientsComponent implements OnInit {
   viewHistory(row: any) {
     this.router.navigate(['/operation/client-history', row.id]);
   }
+
+
 }

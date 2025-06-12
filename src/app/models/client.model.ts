@@ -4,9 +4,19 @@ export interface Client {
   userLastName: string;
   userEmail: string;
   userPhone: string;
-  createdAt?: string;
+  created: string;
   updatedAt?: string;
   updatedBy?: string;
+  active?: boolean;
+}
+
+export interface ClientRequest {
+  id?: number;
+  userFirstName: string;
+  userLastName: string;
+  userEmail: string;
+  userPhone: string;
+  active?: boolean;
 }
 
 export interface ClientHistoryItem {
@@ -20,4 +30,4 @@ export interface ClientHistory {
   clientId: number;
   clientName: string;
   modifications: ClientHistoryItem[];
-} 
+}

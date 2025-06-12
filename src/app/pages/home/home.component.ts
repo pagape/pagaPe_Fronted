@@ -42,7 +42,7 @@ export class HomeComponent {
     { field: 'desc', header: 'Descripcion' },
     { field: 'dateSend', header: 'Fecha de envio' },
     {
-      field: 'status',
+      field: 'active',
       header: 'Estado',
       type: 'tag',
       colorMap: { Activo: 'green', Inactivo: 'red', Pendiente: 'orange' },
@@ -53,9 +53,9 @@ export class HomeComponent {
 
 
   data = [
-    { nro: 1, name: 'Recordatorio 1',des: 'Recordatorio fin de mes abril', dateSend: '10/05/2025 ',status: 'Pendiente',  state: 'P' },
-    { nro: 2, name: 'Recordatorio 1',des: 'Recordatorio fin de mes marzo', dateSend: '01/04/2025 ',status: 'Pendiente',  state: 'P' },
-    { nro: 3, name: 'Recordatorio 1',des: 'Recordatorio inicio de mes marzo', dateSend: '10/03/2025 ',status: 'Respondido',  state: 'U'},
+    { nro: 1, name: 'Recordatorio 1',des: 'Recordatorio fin de mes abril', dateSend: '10/05/2025 ',status: 'Pendiente',  active: false },
+    { nro: 2, name: 'Recordatorio 1',des: 'Recordatorio fin de mes marzo', dateSend: '01/04/2025 ',status: 'Pendiente',  active: false },
+    { nro: 3, name: 'Recordatorio 1',des: 'Recordatorio inicio de mes marzo', dateSend: '10/03/2025 ',status: 'Respondido',  active: false},
   ];
   ref: DynamicDialogRef | undefined;
 

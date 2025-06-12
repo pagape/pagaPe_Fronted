@@ -46,7 +46,7 @@
             }
 
             @else if(col.icon==null) {
-               @if(rowData.state==false || rowData.state=='P' ){
+               @if(rowData.state=='P' ){
                     <strong class="tagP ">
                       <span> {{ rowData[col.field] }}</span>
                     </strong>}
@@ -58,15 +58,19 @@
         <strong class="tagR">
           <span> {{ rowData[col.field] }}</span>
         </strong>
-        }
-              @else {
+
+        }@else if(rowData.active==false ){
+        <strong class="tagR ">
+          <span> Inactivo</span>
+                    </strong>}
+        @else  {
                     <strong class="tag utag">
-                      <span> {{ rowData[col.field] }}</span>
+                      <span> Activo </span>
                     </strong>
                     }
-            }
-        }
 
+        }
+}
         @if (col.type === 'datetime') {
           {{ rowData[col.field] |  date : "dd/MM/yyyy HH:mm:ss" }}
         }
