@@ -1,0 +1,10 @@
+.active{
+
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: var(--fweight-bold);
+  background: var(--color-quaternary);
+
+  border-radius: 24px;
+
+}

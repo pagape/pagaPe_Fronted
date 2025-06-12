@@ -46,7 +46,7 @@
             }
 
             @else if(col.icon==null) {
-               @if(rowData.state==false || rowData.state=='P' ){
+               @if(rowData.state=='P' ){
                     <strong class="tagP ">
                       <span> {{ rowData[col.field] }}</span>
                     </strong>}
@@ -58,15 +58,19 @@
         <strong class="tagR">
           <span> {{ rowData[col.field] }}</span>
         </strong>
-        }
-              @else {
+
+        }@else if(rowData.active==false ){
+        <strong class="tagR ">
+          <span> Inactivo</span>
+                    </strong>}
+        @else  {
                     <strong class="tag utag">
-                      <span> {{ rowData[col.field] }}</span>
+                      <span> Activo </span>
                     </strong>
                     }
-            }
-        }
 
+        }
+}
         @if (col.type === 'datetime') {
           {{ rowData[col.field] |  date : "dd/MM/yyyy HH:mm:ss" }}
         }
@@ -98,26 +102,13 @@
           @if (col.type === 'actions') {
             <div class="uflex-center btntable ">
               @for (action of col.actions; track action) {
-                @if (action.icon === 'slow_motion_video' && rowData.publish === 1) {
-                  <!-- No se renderiza el botón si publish es 1 -->
-                }
 
-                @else if ((action.state == undefined || action.state == 0) && (rowData.state==1 || rowData.state=='A'|| rowData.state=='P')) {
-                  <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
+                   <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
                           [ngClass]="{'disabled-btn': (rowData.door=='-' && action.pending==true) }"
                   >
                     <i class="material-symbols-outlined">{{ action.icon }}</i>
                   </button>
-                }
-                @else if ((action.state == undefined || action.state == 1) && (rowData.state==0 || rowData.state=='U'||rowData.state=='V'||rowData.state=='R')) {
-                  @if (action.icon !== 'slow_motion_video') {
-                    <button pButton [rounded]="true" [text]="true" (click)="action.action(rowData)"
-                    [ngClass]="{'disabled-btn': (rowData.door=='-' && action.pending==true) }"
-                    >
-                      <i class="material-symbols-outlined">{{ action.icon }}</i>
-                    </button>
-                  }
-                }
+
               }
             </div>
         }

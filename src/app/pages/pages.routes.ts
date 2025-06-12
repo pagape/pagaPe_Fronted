@@ -22,6 +22,11 @@ export const PAGES_ROUTES: Routes = [
         loadChildren: () =>
           import('./operation/operation.routes').then(c => c.OPERATION_ROUTES),
       },
+      {
+        path: 'user-management',
+        loadComponent: () =>
+          import('./user-management/user-management.component').then(c => c.UserManagementComponent),
+      },
 
     ],
   },
