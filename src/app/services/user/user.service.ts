@@ -32,6 +32,12 @@ export class UserService {
     return this.http.get<UserInfo[]>(`${this.apiUrl}/status/true`, { headers });
   }
 
+  // Método para obtener todos los usuarios, incluyendo los inactivos
+  getAllUsersIncludingInactive(): Observable<UserInfo[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<UserInfo[]>(`${this.apiUrl}`, { headers });
+  }
+
   getUserProfile(): Observable<any> {
 
     const token = localStorage.getItem('access_token');
@@ -57,5 +63,21 @@ export class UserService {
     };
 
     return this.http.post<any>(`${this.apiUrl}/nameAndEmail`, body);
+  }
+
+  // Nuevos métodos para validar campos duplicados
+  checkDniExists(dni: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/dni/${dni}`, { headers });
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/email/${email}`, { headers });
+  }
+
+  checkPhoneExists(phone: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/phone/${phone}`, { headers });
   }
 }

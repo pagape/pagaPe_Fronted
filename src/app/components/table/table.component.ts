@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +23,7 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent<T> {
+export class TableComponent<T> implements OnChanges {
   @Input() columns: { field: string; title?:string; header: string; type?: string; colorMap?: any; value?: any , tooltipText?: any, actions? : any[], icon?:any }[] = [];
   @Input() data: T[] = [];
   @Input() showPaginator: boolean = true;
@@ -39,8 +39,37 @@ export class TableComponent<T> {
   @Output() checkboxChange = new EventEmitter<{ row: any, checked: boolean }>();
 
   ngOnInit() {
+    // Inicializar la paginación
+    this.updatePagination();
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
+    // Si cambia el conjunto de datos, actualizar la paginación
+    if (changes['data']) {
+      this.updatePagination();
+      
+      // Si no se proporciona totalRecords, usar la longitud de los datos
+      if (!this.totalRecords) {
+        this.totalRecords = this.data.length;
+      }
+    }
+  }
 
+  private updatePagination() {
+    // Si no hay datos, no hacer nada
+    if (!this.data || this.data.length === 0) {
+      this.paginatedData = [];
+      return;
+    }
+
+    // Emitir evento de carga perezosa para obtener datos paginados
+    this.onLazyLoad({
+      first: this.currentPage * this.rowsPerPage,
+      rows: this.rowsPerPage,
+      sortField: null,
+      sortOrder: this.sortOrder,
+      filters: {},
+    });
   }
 
   getTagColor(value: string): string {
@@ -48,20 +77,38 @@ export class TableComponent<T> {
   }
 
   onLazyLoad(event: any) {
+    // Emitir el evento para que el componente padre pueda manejar la paginación
     this.lazyLoad.emit(event);
+    
+    // Si no hay un manejador para el evento lazyLoad, realizar la paginación localmente
+    if (this.lazyLoad.observed) {
+      return;
+    }
+    
+    // Paginación local
+    const first = event.first || 0;
+    const rows = event.rows || this.rowsPerPage;
+    
+    // Calcular el índice de inicio y fin para la página actual
+    const startIndex = first;
+    const endIndex = first + rows;
+    
+    // Obtener los datos para la página actual
+    this.paginatedData = this.data.slice(startIndex, endIndex);
   }
 
   onPageChange(event: any) {
     this.currentPage = event.page;
     this.rowsPerPage = event.rows;
     const first = event.first ?? (this.currentPage * this.rowsPerPage);
-    this.lazyLoad.emit({
+    
+    // Actualizar la paginación
+    this.onLazyLoad({
       first,
       rows: this.rowsPerPage,
       sortField: null,
       sortOrder: this.sortOrder,
       filters: {},
     });
-
   }
 }

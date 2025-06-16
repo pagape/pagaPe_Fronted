@@ -15,7 +15,6 @@
                   placeholder="Buscar "
           />
         </div>
-
       </div>
 
       <button pButton class="uflex-center btn-primary" type="button" (click)="filterData()" >
@@ -29,6 +28,8 @@
 
   <div>
     <app-table [columns]="columns" [data]="data" [actions]="actions"
+               [totalRecords]="filteredData.length"
+               (lazyLoad)="onTableLazyLoad($event)"
     >
     </app-table>
   </div>
