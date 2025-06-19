@@ -1,6 +1,6 @@
 <div class="modal-body">
   <form #formRef="ngForm" class="uflex-v gap10" (ngSubmit)="onSubmit(formRef)">
-    <h4 class="modal-title">{{ config.data.tittle }}</h4>
+    <h4 class="headingst">{{ config.data.tittle }}</h4>
 
     @for(field of config.data.fields; track field){
     <div class="uflex-v gap10 w100">
