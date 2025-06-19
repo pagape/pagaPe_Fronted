@@ -1,16 +1,12 @@
 <div class="utablecont">
   <p-table
-  [value]="data"
-  styleClass="utable"
-  [paginator]="true"
-  [lazy]="true"
-  [rows]="rowsPerPage"
-  [rowsPerPageOptions]="[5, 10, 20]"
-  [totalRecords]="totalRecords"
-  (onLazyLoad)="onLazyLoad($event)"
-  [sortOrder]="sortOrder"
-  paginatorDropdownAppendTo="body"
-  (onPage)="onPageChange($event)">
+    [value]="data"
+    styleClass="utable"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [sortOrder]="sortOrder"
+    paginatorDropdownAppendTo="body">
     <ng-template pTemplate="header">
       <tr>
         @for (col of columns; track col) {

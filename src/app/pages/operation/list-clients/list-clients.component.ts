@@ -202,22 +202,14 @@ export class ListClientsComponent implements OnInit {
     ref.onClose.subscribe((confirmed) => {
       if (confirmed) {
         this.clientService.deleteClient(row.id).subscribe({
-          next: (response) => {
-            if (response && response.success) {
+            next: () => {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Éxito',
                 detail: 'Cliente eliminado correctamente'
               });
               this.loadClients();
-            } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'No se pudo eliminar el cliente, por favor intente nuevamente.'
-              });
-            }
-          },
+            },
           error: (error) => {
             this.messageService.add({
               severity: 'error',
