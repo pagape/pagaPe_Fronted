@@ -3,14 +3,14 @@
     <h4 class="modal-title">{{ config.data.tittle }}</h4>
 
     @for(field of config.data.fields; track field){
-    <div class="uflex-v gap10">
+    <div class="uflex-v gap10 w100">
       <div class="field-header">
         <label [for]="field.name" class="form-label">{{ field.label }}</label>
         <span *ngIf="hasError(field.name)" class="field-error-indicator">* Campo con error</span>
       </div>
 
       @if(field.type==='select'){
-        <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
+        <div class="uflex-v gap10" [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
           <p-select
             [id]="field.name"
             class="form-select"
@@ -46,7 +46,7 @@
           />
         </div>
       }
-      
+
       <div *ngIf="hasError(field.name)" class="error-message">
         {{ getErrorMessage(field.name) }}
       </div>

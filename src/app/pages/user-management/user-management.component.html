@@ -28,8 +28,6 @@
 
   <div>
     <app-table [columns]="columns" [data]="data" [actions]="actions"
-               [totalRecords]="filteredData.length"
-               (lazyLoad)="onTableLazyLoad($event)"
     >
     </app-table>
   </div>

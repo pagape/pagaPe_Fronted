@@ -58,4 +58,20 @@ export class UserService {
 
     return this.http.post<any>(`${this.apiUrl}/nameAndEmail`, body);
   }
+
+  checkDniExists(dni: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/dni/${dni}`, { headers });
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/email/${email}`, { headers });
+  }
+
+  checkPhoneExists(phone: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/phone/${phone}`, { headers });
+  }
+
 }

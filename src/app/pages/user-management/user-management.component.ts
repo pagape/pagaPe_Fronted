@@ -22,8 +22,6 @@ import {UserInfo} from "../../models/user/user";
 export class UserManagementComponent {
 
   searchText: string = '';
-  // Variable configurada como false y comentada para indicar que la funcionalidad está desactivada visualmente
-  showInactiveUsers: boolean = false; // Funcionalidad de mostrar usuarios inactivos desactivada visualmente
 
   fields:any[]= [
     {label: 'Nombre', name: 'userFirstName', type: 'text', required: true, placeholder: 'Ingrese el nombre'},
@@ -67,10 +65,13 @@ export class UserManagementComponent {
   ];
 
   actions = [
+
     { icon: 'edit_square', action: (row: any) => this.onEdit(row)},
     { icon: 'delete_forever', action: (row: any) => this.onDelete(row)}
+
+
+
   ];
-  
   columns = [
     { field: 'id', header: 'Id' },
     { field: 'userFirstName', header: 'Nombre' },
@@ -79,25 +80,29 @@ export class UserManagementComponent {
     { field: 'userEmail', header: 'Correo' },
     { field: 'userPhone', header: 'Numero' },
     { field: 'role', header: 'Rol' },
+
     {
       field: 'actions',
       header: 'Opciones',
       type: 'actions',
       actions: this.actions,
     },
+
+
   ];
 
-  data: UserInfo[] = []; // Datos paginados que se muestran en la tabla
-  originalData: UserInfo[] = []; // Todos los datos originales
-  filteredData: UserInfo[] = []; // Datos después de aplicar filtros
+
+  data = [
+    { id: 1, userFirstName: 'Mario',userLastName: 'Gutierrez', userDNI: '74737912',status: 'Activo', userEmail: "mGutierrres@gmail.com",userPhone: "987654321", state: 'A',role: 'Admin' },
+    { id: 2, userFirstName: 'Juan',userLastName: 'Diaz', userDNI: '107235567 ',status: 'Inactivo',userEmail: "jdiaz@gmail.com", userPhone: "987654321", state: 'R' ,role: 'Admin' },
+    { id: 3, userFirstName: 'Isabel',userLastName: 'Rosales', userDNI: '107235567',status: 'Activo',userEmail: "iRosales@gmail.com" , userPhone: "987654321", state: 'A',role: 'Admin'},
+  ];
+  originalData: any[] = [];
   ref: DynamicDialogRef | undefined;
 
-  constructor(
-    public dialogService: DialogService, 
-    private userService: UserService, 
-    private authService: AuthService,
-    private notificationService: NotificationService
-  ) {
+
+  constructor(public dialogService:DialogService, private userService:UserService, private authService: AuthService) {
+
     this.loadUsers();
   }
 
@@ -128,53 +133,33 @@ export class UserManagementComponent {
         console.log('modal cerrado');
       }
     });
+
+
+
   }
 
   loadUsers(){
-    // La funcionalidad de cargar usuarios inactivos está desactivada visualmente, pero se mantiene la lógica
-    if (this.showInactiveUsers) {
-      this.userService.getAllUsersIncludingInactive().subscribe({
-        next: (data: UserInfo[]) => {
-          this.originalData = data;
-          this.filteredData = [...data];
-          this.applyPagination(0, 5);
-          console.log('Todos los usuarios cargados (incluidos inactivos):', this.data);
-        },
-        error: (err: any) => {
-          console.error('Error al cargar los usuarios:', err);
-          this.notificationService.error('Error al cargar los usuarios');
-        }
-      });
-    } else {
-      this.userService.getAllUsers().subscribe({
-        next: (data: UserInfo[]) => {
-          this.originalData = data;
-          this.filteredData = [...data];
-          this.applyPagination(0, 5);
-          console.log('Usuarios activos cargados:', this.data);
-        },
-        error: (err: any) => {
-          console.error('Error al cargar los usuarios:', err);
-          this.notificationService.error('Error al cargar los usuarios');
-        }
-      });
-    }
-  }
 
-  toggleInactiveUsers() {
-    // Método para alternar la visualización de usuarios inactivos (desactivado visualmente)
-    this.loadUsers(); // Esto ya actualiza la paginación
+    this.userService.getAllUsers().subscribe({
+      next: (data: any[]) => {
+        this.data = data;
+        this.originalData = data;
+        console.log('Usuarios cargados:', this.data);
+
+      },
+      error: (err) => {
+        console.error('Error al cargar los usuarios:', err);
+      }
+    });
   }
 
   filterData() {
     const texto = this.searchText.toLowerCase().trim();
 
     if (!texto) {
-      // Si no hay texto de búsqueda, usamos todos los datos originales
-      this.filteredData = [...this.originalData];
+      this.data = [...this.originalData]; // si no hay texto, se muestran todos
     } else {
-      // Filtramos los datos
-      this.filteredData = this.originalData.filter(usuario =>
+      this.data = this.originalData.filter(usuario =>
         usuario.userFirstName.toLowerCase().includes(texto) ||
         usuario.userLastName.toLowerCase().includes(texto) ||
         usuario.userDNI.includes(texto) ||
@@ -183,9 +168,6 @@ export class UserManagementComponent {
         usuario.role.toLowerCase().includes(texto)
       );
     }
-    
-    // Aplicamos la paginación a los datos filtrados
-    this.applyPagination(0, 5);
   }
 
   handleUserAdded(newUser: any): void {
@@ -193,12 +175,11 @@ export class UserManagementComponent {
     this.authService.registerUser(newUser).subscribe({
       next: (data) => {
         console.log('Usuario creado con éxito:', data);
-        this.notificationService.success('Usuario creado con éxito');
-        this.loadUsers(); // Esto ya actualiza la paginación
+        this.loadUsers();
+
       },
       error: (err) => {
         console.error('Error al crear el usuario:', err);
-        this.notificationService.error('Error al crear el usuario');
       }
     });
   }
@@ -210,12 +191,10 @@ export class UserManagementComponent {
     this.userService.updateUser(id, newUser).subscribe({
       next: (updatedUser) => {
         console.log('Usuario actualizado:', updatedUser);
-        this.notificationService.success('Usuario actualizado con éxito');
-        this.loadUsers(); // Esto ya actualiza la paginación
+        this.loadUsers();
       },
       error: (err) => {
         console.error('Error actualizando usuario:', err);
-        this.notificationService.error('Error al actualizar el usuario');
       }
     });
   }
@@ -224,22 +203,21 @@ export class UserManagementComponent {
     this.userService.deleteUser(user.id).subscribe({
       next: () => {
         console.log(`Usuario con ID ${user.id} eliminado.`);
-        this.notificationService.success('Usuario eliminado con éxito');
-        this.loadUsers(); // Esto ya actualiza la paginación
+        this.loadUsers();
       },
       error: (err) => {
         console.error('Error al eliminar usuario:', err);
-        this.notificationService.error('Error al eliminar el usuario');
       }
     });
+
   }
-  
   onDelete(row: any) {
     const ref = this.dialogService.open(ConfirmModalComponent, {
       data: {
         detailsCupo: {
           title: "Esta seguro  de eliminar a :",
           start: row.userFirstName + " "+row.userLastName,
+
         },
       },
       width: '400px',
@@ -251,44 +229,38 @@ export class UserManagementComponent {
       if (result==true) {
         console.log(row)
         console.log(result);
+
         this.handleDeleteUser(row)
+
       } else {
         console.log('modal cerrado');
       }
     });
+
   }
 
   create() {
     const summitData = {
+
       tittle: 'Crear usuario',
       fields: this.fields
     }
 
+
     const ref = this.dialogService.open(SharedFormComponent, {
       data:summitData,
       dismissableMask:true,
+
     });
 
     ref.onClose.subscribe(result => {
       if (result) {
         console.log(result);
         this.handleUserAdded(result);
+
       } else {
         console.log('modal cerrado');
       }
     });
-  }
-
-  onTableLazyLoad(event: any) {
-    const first = event.first || 0;
-    const rows = event.rows || 5;
-    
-    // Aplicamos la paginación a los datos filtrados
-    this.applyPagination(first, rows);
-  }
-
-  private applyPagination(first: number, rows: number) {
-    // Aplicamos la paginación a los datos filtrados
-    this.data = this.filteredData.slice(first, first + rows);
   }
 }

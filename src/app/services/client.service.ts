@@ -7,9 +7,9 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ClientService {
-  private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/clients';
+  //private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/clients';
 
-  //private apiUrl = 'http://localhost:8083/api/clients';
+  private apiUrl = 'http://localhost:8083/api/clients';
   constructor(private http: HttpClient) {}
 
   getAuthHeaders(): HttpHeaders {
