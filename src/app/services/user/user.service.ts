@@ -9,9 +9,9 @@ import {UserInfo} from "../../models/user/user";
   providedIn: 'root'
 })
 export class UserService {
-  //private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/users'; // URL de tu API
+  private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/users'; // URL de tu API
 
-  private apiUrl = 'http://localhost:8083/api/pagaPe/v1/users'; // Cambia la URL según tu backend
+ // private apiUrl = 'http://localhost:8083/api/pagaPe/v1/users'; // Cambia la URL según tu backend
 
   constructor(private http: HttpClient) {
 
