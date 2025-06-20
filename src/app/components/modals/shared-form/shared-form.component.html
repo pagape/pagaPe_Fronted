@@ -28,11 +28,35 @@
       @if(field.type=='datePicker'){
         <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
           <p-date-picker [(ngModel)]="formData[field.name]" [selectionMode]="field.selectionMode" [inputId]="field.name" dateFormat="dd/mm/yy"
-                       [placeholder]="field.placeholder || ''" [required]="field.required" showIcon="true"></p-date-picker>
+                         [name]="field.name" [placeholder]="field.placeholder || ''" [required]="field.required" showIcon="true"></p-date-picker>
         </div>
       }
 
-      @if(field.type != 'select' && field.type != 'datePicker') {
+    @if(field.type=='autocomplete'){
+
+      <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
+
+        <p-autoComplete
+          [id]="field.name"
+          [(ngModel)]="formData[field.name]"
+          [suggestions]="filteredOptions[field.name]"
+          (completeMethod)="filterAutoComplete($event, field)"
+          [optionLabel]="field.displayField || 'label'"
+          [forceSelection]="true"
+          [dropdown]="true"
+          [minLength]="1"
+          [required]="field.required"
+          [placeholder]="field.placeholder || ''"
+          class="autocomplete-full"
+          [name]="field.name"
+        ></p-autoComplete>
+
+
+           </div>
+
+        }
+
+      @if(field.type != 'select' && field.type != 'datePicker' && field.type != 'autocomplete' ) {
         <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
           <input
             [type]="field.type"

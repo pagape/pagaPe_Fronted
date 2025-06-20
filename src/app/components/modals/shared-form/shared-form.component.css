@@ -42,6 +42,11 @@ p-date-picker input{
   width: 100%!important;
 }
 
+p-autocomplete p-inputwrapper {
+
+  width: 100% !important;
+}
+
 .p-date-picker-input-icon-container{
   color: #00B94C;
   margin-right: 10px;

@@ -9,29 +9,37 @@ import {firstValueFrom} from "rxjs";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {UserService} from "../../../services/user/user.service";
 import {NotificationService} from "../../../services/notification.service";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
+
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'app-shared-form',
-  imports: [FormsModule,DatePicker,CommonModule, SelectModule, InputTextModule,ButtonModule],
+  imports: [FormsModule,DatePicker,CommonModule, SelectModule, InputTextModule,ButtonModule,AutoCompleteModule],
   templateUrl: './shared-form.component.html',
   styleUrl: './shared-form.component.css'
 })
 export class SharedFormComponent {
 
   @Input() title: string = '';
-  @Input() fields: { label: string; name: string; type: string; required: boolean; placeholder?: any; options?: any, disable? :boolean, selectionMode? : undefined }[] = [];
+  @Input() fields: { label: string; name: string; type: string; required: boolean; placeholder?: any; options?: any, disable? :boolean, selectionMode? : undefined ,displayField? : string}[] = [];
   @Input() submitLabel: string = 'Guardar';
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<any>();
 
-  @Input()formData? : any = {}; // Datos del formulario
-  originalData: any = {}; // Para guardar los valores originales en caso de edición
+  @Input()formData? : any = {};
+  originalData: any = {};
   isEditing: boolean = false;
-  
+
+  filteredOptions: { [key: string]: any[] } = {};
   // Objeto para almacenar errores por campo
   fieldErrors: { [key: string]: string } = {};
-  
+
   // Para controlar la animación de los campos con error
   animatingFields: { [key: string]: boolean } = {};
 
@@ -98,14 +106,14 @@ export class SharedFormComponent {
       this.animateField('userPhone');
       return false;
     }
-    
+
     // Verificar si es un número de teléfono no válido (secuencias repetitivas)
     if (this.invalidPhoneNumbers.includes(phone)) {
       this.fieldErrors['userPhone'] = 'El número de teléfono no es válido. No se permiten secuencias repetitivas o patrones simples';
       this.animateField('userPhone');
       return false;
     }
-    
+
     // Verificar si tiene más de 2 dígitos repetidos consecutivos
     const hasRepeatingDigits = /([0-9])\1{2,}/.test(phone);
     if (hasRepeatingDigits) {
@@ -113,7 +121,7 @@ export class SharedFormComponent {
       this.animateField('userPhone');
       return false;
     }
-    
+
     return true;
   }
 
@@ -124,53 +132,47 @@ export class SharedFormComponent {
       this.animateField('userDNI');
       return false;
     }
-    
+
     // Verificar si el DNI tiene dígitos repetidos o secuencias simples
     if (/^(\d)\1+$/.test(dni)) { // Todos los dígitos son iguales
       this.fieldErrors['userDNI'] = 'El DNI no puede contener el mismo dígito repetido';
       this.animateField('userDNI');
       return false;
     }
-    
+
     if (dni === '12345678' || dni === '87654321') {
       this.fieldErrors['userDNI'] = 'El DNI no puede ser una secuencia simple';
       this.animateField('userDNI');
       return false;
     }
-    
+
     return true;
   }
 
   async onSubmit(form: any) {
     if (form.valid) {
-      // Limpiar errores previos
       this.fieldErrors = {};
-      
+      let hasErrors = false;
+
       try {
-        let hasErrors = false;
-
-        // Validar formato de nombre
-        if (this.formData.userFirstName && !this.validateNameFormat(this.formData.userFirstName, 'userFirstName')) {
+        // === 1. Validaciones específicas para usuarios ===
+        if ('userFirstName' in this.formData && !this.validateNameFormat(this.formData.userFirstName, 'userFirstName')) {
           hasErrors = true;
         }
 
-        // Validar formato de apellido
-        if (this.formData.userLastName && !this.validateNameFormat(this.formData.userLastName, 'userLastName')) {
+        if ('userLastName' in this.formData && !this.validateNameFormat(this.formData.userLastName, 'userLastName')) {
           hasErrors = true;
         }
 
-        // Validar formato de teléfono
-        if (this.formData.userPhone && !this.validatePhoneFormat(this.formData.userPhone)) {
+        if ('userPhone' in this.formData && !this.validatePhoneFormat(this.formData.userPhone)) {
           hasErrors = true;
         }
 
-        // Validar formato de DNI
-        if (this.formData.userDNI && !this.validateDniFormat(this.formData.userDNI)) {
+        if ('userDNI' in this.formData && !this.validateDniFormat(this.formData.userDNI)) {
           hasErrors = true;
         }
 
-        // Validar DNI
-        if (this.formData.userDNI && (!this.isEditing || this.formData.userDNI !== this.originalData.userDNI)) {
+        if ('userDNI' in this.formData && (!this.isEditing || this.formData.userDNI !== this.originalData?.userDNI)) {
           const dniExists = await firstValueFrom(this.userService.checkDniExists(this.formData.userDNI));
           if (dniExists) {
             this.fieldErrors['userDNI'] = 'Este DNI ya está registrado en el sistema';
@@ -179,8 +181,7 @@ export class SharedFormComponent {
           }
         }
 
-        // Validar Email
-        if (this.formData.userEmail && (!this.isEditing || this.formData.userEmail !== this.originalData.userEmail)) {
+        if ('userEmail' in this.formData && (!this.isEditing || this.formData.userEmail !== this.originalData?.userEmail)) {
           const emailExists = await firstValueFrom(this.userService.checkEmailExists(this.formData.userEmail));
           if (emailExists) {
             this.fieldErrors['userEmail'] = 'Este correo electrónico ya está registrado en el sistema';
@@ -189,8 +190,7 @@ export class SharedFormComponent {
           }
         }
 
-        // Validar Teléfono
-        if (this.formData.userPhone && (!this.isEditing || this.formData.userPhone !== this.originalData.userPhone)) {
+        if ('userPhone' in this.formData && (!this.isEditing || this.formData.userPhone !== this.originalData?.userPhone)) {
           const phoneExists = await firstValueFrom(this.userService.checkPhoneExists(this.formData.userPhone));
           if (phoneExists) {
             this.fieldErrors['userPhone'] = 'Este número de teléfono ya está registrado en el sistema';
@@ -199,15 +199,48 @@ export class SharedFormComponent {
           }
         }
 
-        // Si hay errores, mostrar una notificación general
+        // === 2. Si hay errores, notificar y cancelar ===
         if (hasErrors) {
           this.notificationService.error('Hay campos con errores. Por favor, revisa la información.');
-        } else {
-          // Si no hay errores, enviar el formulario
-          console.log(this.formData);
-          this.submitForm.emit(this.formData);
-          this.ref.close(this.formData);
+          return;
         }
+
+        // === 3. Procesar datos dinámicamente antes de emitir ===
+        const payload: any = {};
+
+        console.log('Form data recibido:', this.formData);
+
+        for (const field of this.config.data.fields) {
+          const value = this.formData[field.name];
+
+          if (field.type === 'autocomplete') {
+            payload[field.name] = value?.id ?? null;
+          } else if (field.type === 'select') {
+            payload[field.name] = value;
+          } else if (field.type === 'datePicker' && field.selectionMode === 'range') {
+            const start = value?.[0] instanceof Date ? value[0].toISOString().slice(0, 10) : null;
+            const end = value?.[1] instanceof Date ? value[1].toISOString().slice(0, 10) : null;
+
+            if (field.name === 'fechaRegistro') {
+              payload['issueDate'] = start;
+              payload['dueDate'] = end;
+            } else {
+              payload[field.name + '_start'] = start;
+              payload[field.name + '_end'] = end;
+            }
+          }
+         else if (field.type === 'number') {
+            payload[field.name] = value ? parseFloat(value) : null;
+          } else {
+            payload[field.name] = value;
+          }
+        }
+
+        // === 4. Emitir datos procesados y cerrar modal ===
+        console.log('Payload generado:', payload);
+        this.submitForm.emit(payload);
+        this.ref.close(payload);
+
       } catch (error) {
         console.error('Error al validar campos:', error);
         this.notificationService.error('Error al validar los campos. Por favor, intenta de nuevo.');
@@ -215,14 +248,27 @@ export class SharedFormComponent {
     }
   }
 
+
   close() {
     this.ref.close();
+  }
+
+  filterAutoComplete(event: any, field: any) {
+    const query = event.query.toLowerCase();
+
+    const originalOptions = field.options || [];
+
+
+    console.log(originalOptions)
+    this.filteredOptions[field.name] = originalOptions.filter((item: any) =>
+      item[field.displayField]?.toLowerCase().includes(query)
+    );
   }
 
   check(name:string):boolean{
     return !!(this.config.data.tittle.includes('Editar') && name == 'userPassword');
   }
-  
+
   // Método para verificar si un campo está animándose
   isAnimating(fieldName: string): boolean {
     return !!this.animatingFields[fieldName];

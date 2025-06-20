@@ -5,7 +5,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ClientHistory } from '../../../models/client.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClientService } from '../../../services/client.service';
+import { ClientService } from '../../../services/client-managament/client.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
@@ -16,23 +16,23 @@ import { MessageService } from 'primeng/api';
   template: `
     <div class="history-container">
       <p-toast position="top-right"></p-toast>
-      
+
       <div class="history-header">
         <h3>Historial de modificaciones de {{ clientName }}</h3>
         <button *ngIf="!isStandalone" pButton type="button" icon="pi pi-times" class="p-button-rounded p-button-text" (click)="close()"></button>
       </div>
-      
+
       <div *ngIf="isLoading" class="loading">
         <p>Cargando historial...</p>
       </div>
-      
+
       <div *ngIf="!isLoading && noHistoryAvailable" class="no-history">
         <p>No hay historial de modificaciones para este cliente.</p>
       </div>
-      
-      <p-table *ngIf="!isLoading && !noHistoryAvailable" 
-               [value]="modificationsToShow" 
-               styleClass="p-datatable-sm" 
+
+      <p-table *ngIf="!isLoading && !noHistoryAvailable"
+               [value]="modificationsToShow"
+               styleClass="p-datatable-sm"
                [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="header">
           <tr>
@@ -51,7 +51,7 @@ import { MessageService } from 'primeng/api';
           </tr>
         </ng-template>
       </p-table>
-      
+
       <div class="actions" *ngIf="isStandalone">
         <button pButton type="button" label="Volver" (click)="goBack()"></button>
       </div>
@@ -63,27 +63,27 @@ import { MessageService } from 'primeng/api';
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .history-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
     }
-    
+
     .no-history, .loading {
       padding: 1rem;
       background-color: #f8f9fa;
       border-radius: 4px;
       margin-bottom: 1rem;
     }
-    
+
     .actions {
       margin-top: 1rem;
       display: flex;
       justify-content: flex-end;
     }
-    
+
     h3 {
       margin-bottom: 0;
     }
@@ -114,7 +114,7 @@ export class ClientHistoryComponent implements OnInit {
   ngOnInit() {
     // Determinar si el componente se carga como página independiente o como modal
     this.isStandalone = this.ref === null;
-    
+
     if (this.isStandalone) {
       // Si es página independiente, obtener el ID del cliente de la URL
       this.route.params.subscribe(params => {
@@ -159,7 +159,7 @@ export class ClientHistoryComponent implements OnInit {
 
   formatDate(dateString: string): string {
     if (!dateString) return '';
-    
+
     const date = new Date(dateString);
     return date.toLocaleString('es-ES', {
       day: '2-digit',
@@ -179,4 +179,4 @@ export class ClientHistoryComponent implements OnInit {
   goBack() {
     this.router.navigate(['/operation/list-clients']);
   }
-} 
+}

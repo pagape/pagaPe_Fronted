@@ -5,7 +5,7 @@ import { CommonModule } from "@angular/common";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextModule } from "primeng/inputtext";
 import { ButtonModule } from "primeng/button";
-import { ClientService } from '../../../../services/client.service';
+import { ClientService } from '../../../../services/client-managament/client.service';
 import {Client, ClientRequest} from '../../../../models/client.model';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';

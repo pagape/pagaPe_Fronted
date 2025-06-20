@@ -6,10 +6,10 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientService {
-  private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/clients';
+export class ClientServiceService {
+  //private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/clients';
 
-  //private apiUrl = 'http://localhost:8083/api/clients';
+  private apiUrl = 'http://localhost:8083/api/client-service';
   constructor(private http: HttpClient) {}
 
   getAuthHeaders(): HttpHeaders {
@@ -21,30 +21,30 @@ export class ClientService {
   }
 
   // Obtener todos los clientes
-  getAllClients(): Observable<any[]> {
+  getAllClientServices(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(this.apiUrl, { headers })
       .pipe(catchError(this.handleError));
   }
 
   // Obtener un cliente por ID
-  getClientById(id: number): Observable<any> {
+  getClientServById(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
   // Crear un nuevo cliente
-  createClient(client: any): Observable<any> {
+  createClientService(client: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post<any>(this.apiUrl, client, { headers })
       .pipe(catchError(this.handleError));
   }
 
   // Actualizar un cliente existente
-  updateClient(id: number, client: any): Observable<any> {
+  updateClientService(id: number, client: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.put<any>(`${this.apiUrl}/${id}`, client, { headers })
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, client, { headers })
       .pipe(catchError(this.handleError));
   }
 
@@ -55,12 +55,6 @@ export class ClientService {
       .pipe(catchError(this.handleError));
   }
 
-  // Obtener historial de modificaciones de un cliente
-  getClientHistory(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/${id}/history`, { headers })
-      .pipe(catchError(this.handleError));
-  }
 
   // Manejo de errores
   private handleError(error: HttpErrorResponse) {

@@ -10,7 +10,7 @@ import { ButtonModule } from "primeng/button";
 import { TableComponent } from "../../../components/table/table.component";
 import { ClientModalComponent } from "../modals/client-modal/client-modal.component";
 import { ConfirmModalComponent } from "../../../components/modals/confirm-modal/confirm-modal.component";
-import { ClientService } from "../../../services/client.service";
+import { ClientService } from "../../../services/client-managament/client.service";
 import { Client } from "../../../models/client.model";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
