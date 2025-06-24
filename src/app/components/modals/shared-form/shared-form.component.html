@@ -1,17 +1,17 @@
 <div class="modal-body">
   <form #formRef="ngForm" class="uflex-v gap10" (ngSubmit)="onSubmit(formRef)">
-    <h4 class="modal-title">{{ config.data.tittle }}</h4>
-
+    <h4 class="headingst">{{ config.data.tittle }}</h4>
 
     @for(field of config.data.fields; track field){
-
-    <div class="uflex-v gap10" >
-      <label [for]="field.name" class="form-label">{{ field.label }}</label>
-
+    <div class="uflex-v gap10 w100">
+      <div class="field-header">
+        <label [for]="field.name" class="form-label">{{ field.label }}</label>
+        <span *ngIf="hasError(field.name)" class="field-error-indicator">* Campo con error</span>
+      </div>
 
       @if(field.type==='select'){
+        <div class="uflex-v gap10" [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
           <p-select
-
             [id]="field.name"
             class="form-select"
             [name]="field.name"
@@ -22,38 +22,68 @@
             optionValue="id"
           >
           </p-select>
+        </div>
       }
-
 
       @if(field.type=='datePicker'){
-        <p-date-picker [(ngModel)]="formData[field.name]" [selectionMode]="field.selectionMode" [inputId]="field.name" dateFormat="dd/mm/yy"
-                       [placeholder]="field.placeholder || ''" [required]="field.required" showIcon="true"></p-date-picker>
+        <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
+          <p-date-picker [(ngModel)]="formData[field.name]" [selectionMode]="field.selectionMode" [inputId]="field.name" dateFormat="dd/mm/yy"
+                         [name]="field.name" [placeholder]="field.placeholder || ''" [required]="field.required" showIcon="true"></p-date-picker>
+        </div>
       }
 
-      @if(field.type != 'select' && field.type != 'datePicker') {
-      <input
-        [type]="field.type"
-        [id]="field.name"
-        class="form-control"
-        [name]="field.name"
-        [(ngModel)]="formData[field.name]"
-        [required]="field.required"
-        [placeholder]="field.placeholder || ''"
-        [disabled]="check(field.name)"
-      />
+    @if(field.type=='autocomplete'){
+
+      <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
+
+        <p-autoComplete
+          [id]="field.name"
+          [(ngModel)]="formData[field.name]"
+          [suggestions]="filteredOptions[field.name]"
+          (completeMethod)="filterAutoComplete($event, field)"
+          [optionLabel]="field.displayField || 'label'"
+          [forceSelection]="true"
+          [dropdown]="true"
+          [minLength]="1"
+          [required]="field.required"
+          [placeholder]="field.placeholder || ''"
+          class="autocomplete-full"
+          [name]="field.name"
+        ></p-autoComplete>
+
+
+           </div>
+
+        }
+
+      @if(field.type != 'select' && field.type != 'datePicker' && field.type != 'autocomplete' ) {
+        <div [class.error-field]="hasError(field.name)" [class.animate-error]="isAnimating(field.name)">
+          <input
+            [type]="field.type"
+            [id]="field.name"
+            class="form-control"
+            [name]="field.name"
+            [(ngModel)]="formData[field.name]"
+            [required]="field.required"
+            [placeholder]="field.placeholder || ''"
+            [disabled]="check(field.name)"
+          />
+        </div>
       }
+
+      <div *ngIf="hasError(field.name)" class="error-message">
+        {{ getErrorMessage(field.name) }}
       </div>
+    </div>
+    }
 
-
-}
-      <div class="uflex uflex-center gap30 w100 ">
-        <button class="btn-primary uflex uflex-center" type="submit" [disabled]="!formRef.valid" >
-          <i class="material-symbols-outlined">post_add</i> Guardar
-        </button>
-        <button class="btn-whitest uflex uflex-center" (click)="close()">
-          <i class="material-symbols-outlined">cancel</i> Cancelar
-        </button>
-      </div>
-
+    <div class="uflex uflex-center gap30 w100 ">
+      <button class="btn-primary uflex uflex-center" type="submit" [disabled]="!formRef.valid" >
+        <i class="material-symbols-outlined">post_add</i> Guardar
+      </button>
+      <button class="btn-whitest uflex uflex-center" (click)="close()">
+        <i class="material-symbols-outlined">cancel</i> Cancelar
+      </button>
+    </div>
   </form>
 </div>

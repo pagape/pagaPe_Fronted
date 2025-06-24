@@ -1,67 +1,87 @@
-
 <div class="modal-container">
   <div class="modal-header uflex uflex-jbtw">
-
-    <h2 class="headingst"> {{config.data}} servicio de cliente</h2>
-
-
+    <h2 class="headingst"> {{ config.data.name }} servicio de cliente</h2>
   </div>
-  <div class="modal-body">
 
-    <div class="uflex-v gap30  w100">
+  <div class="modal-body">
+    <form #formRef="ngForm" (ngSubmit)="guardar()" class="uflex-v gap30 w100">
 
       <div class="uflex-v gap10 ">
         <label for="name" class="fw-bold">Cliente</label>
-        <input type="text"  id="name" [(ngModel)]="name" placeholder="Escribe"/>
+        <p-autoComplete
+          id="name"
+          [(ngModel)]="formData.cliente"
+          [suggestions]="filteredClients"
+          (completeMethod)="filterClients($event)"
+          [field]="'userFirstName'"
+          [dropdown]="true"
+          [placeholder]="'Escribe'"
+          forceSelection="true"
+          class="autocomplete-full"
+          name="cliente"
+        ></p-autoComplete>
       </div>
-
 
       <div class="uflex-v gap10 ">
         <label for="service" class="fw-bold">Tipo de servicio: </label>
-        <p-select id="service" placeholder=""
-                  [options]="services" [(ngModel)]="serviceSelected" >
-        </p-select>
+        <p-select
+          id="service"
+          placeholder=""
+          [options]="services"
+          [(ngModel)]="formData.servicio"
+          optionLabel="name"
+          optionValue="id"
+          name="servicio"
+        ></p-select>
       </div>
 
-      <div class="uflex-v gap10 w100" >
+      <div class="uflex-v gap10 w100">
         <label for="daterange">Fecha registro</label>
-        <p-date-picker [(ngModel)]="dateRange" selectionMode="range" inputId="daterange" dateFormat="dd/mm/yy"
-                       placeholder="Elige fecha inicio y fecha fin" showIcon="true"></p-date-picker>
-
+        <p-date-picker
+          [(ngModel)]="formData.fecha"
+          selectionMode="range"
+          inputId="daterange"
+          dateFormat="dd/mm/yy"
+          placeholder="Elige fecha inicio y fecha fin"
+          showIcon="true"
+          name="fecha"
+        ></p-date-picker>
       </div>
 
       <div class="uflex-v gap10 ">
         <label for="whats" class="fw-bold">Periodicidad de pago: </label>
-        <p-select id="whats" placeholder=""
-                  [options]="payments" [(ngModel)]="paymentSelected" >
-        </p-select>
+        <p-select
+          id="whats"
+          placeholder=""
+          [options]="payments"
+          [(ngModel)]="formData.paymentFrequency"
+          name="paymentFrequency"
+        ></p-select>
       </div>
 
-
-
-      <div class="uflex-v gap10 column ">
-
+      <div class="uflex-v gap10 column">
         <label class="font-bold block mb-2" for="peso">
           Monto
         </label>
-        <p-inputnumber [(ngModel)]="peso"   buttonLayout="horizontal" inputId="peso" mode="currency" currency="PEN" locale="esp-LAA" ></p-inputnumber>
-
+        <p-inputnumber
+          [(ngModel)]="formData.amount"
+          buttonLayout="horizontal"
+          inputId="peso"
+          mode="currency"
+          currency="PEN"
+          locale="es-PE"
+          name="amount"
+        ></p-inputnumber>
       </div>
 
-
-      <div class="uflex uflex-center gap30 w100 ">
-        <button class="btn-primary uflex uflex-center" (click)="guardar()">
+      <div class="uflex uflex-center gap30 w100">
+        <button class="btn-primary uflex uflex-center" type="submit">
           <i class="material-symbols-outlined">post_add</i> Guardar
         </button>
-        <button class="btn-whitest uflex uflex-center" (click)="cancelar()">
+        <button class="btn-whitest uflex uflex-center" type="button" (click)="cancelar()">
           <i class="material-symbols-outlined">cancel</i> Cancelar
         </button>
       </div>
-
-    </div>
-
+    </form>
   </div>
-
 </div>
-
-

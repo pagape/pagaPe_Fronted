@@ -1,11 +1,8 @@
 p-inputnumber{
-
   height: 48px !important;
   text-align: center ;
   font-size: 16px;
-
 }
-
 
 ::ng-deep input#peso.p-inputtext.p-component.p-inputnumber-input {
   height: 48px;
@@ -17,40 +14,107 @@ input{
   padding: 10px;
   border-radius: 8px !important;
   border: 1px solid #cbd5e1;
+  width: 100%;
 }
-
-
 
 .modal-container{
   text-align: start;
 }
 
 p-date-picker{
-  display: flex
-;
+  display: flex;
   padding: 10px 0;
   width: 100% !important;
 
   & span {
     & input {
-
       width: 100% !important;
       font-size: 14px;
     }
   }
   & calendaricon {
-
     color: #00B94C;
     margin-right: 10px;
   }
 }
-p-date-picker input{
 
+p-date-picker input{
   width: 100%!important;
 }
 
-.p-date-picker-input-icon-container{
+p-autocomplete p-inputwrapper {
 
+  width: 100% !important;
+}
+
+.p-date-picker-input-icon-container{
   color: #00B94C;
   margin-right: 10px;
+}
+
+/* Estilos para campos con error */
+.field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.field-error-indicator {
+  color: #e74c3c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error-field input,
+.error-field p-select,
+.error-field p-date-picker {
+  border-color: #e74c3c !important;
+  background-color: rgba(231, 76, 60, 0.05);
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #e74c3c;
+}
+
+/* Animación para campos con error */
+@keyframes errorPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+  }
+}
+
+.animate-error {
+  animation: errorPulse 1s ease-out;
+}
+
+/* Estilos para inputs dentro de campos con error */
+.error-field input {
+  border: 1px solid #e74c3c !important;
+}
+
+/* Estilos para selects dentro de campos con error */
+::ng-deep .error-field .p-dropdown {
+  border-color: #e74c3c !important;
+}
+
+/* Estilos para date pickers dentro de campos con error */
+::ng-deep .error-field .p-datepicker-trigger {
+  border-color: #e74c3c !important;
+}
+
+::ng-deep .error-field .p-inputtext {
+  border-color: #e74c3c !important;
 }

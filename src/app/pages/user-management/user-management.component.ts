@@ -9,6 +9,8 @@ import {TableComponent} from "../../components/table/table.component";
 import {ButtonModule} from "primeng/button";
 import {SharedFormComponent} from "../../components/modals/shared-form/shared-form.component";
 import {AuthService} from "../../services/auth.service";
+import {NotificationService} from "../../services/notification.service";
+import {UserInfo} from "../../models/user/user";
 
 @Component({
   selector: 'app-user-management',
@@ -209,7 +211,7 @@ export class UserManagementComponent {
     });
 
   }
-    onDelete(row: any) {
+  onDelete(row: any) {
     const ref = this.dialogService.open(ConfirmModalComponent, {
       data: {
         detailsCupo: {
@@ -223,17 +225,17 @@ export class UserManagementComponent {
       dismissableMask: false,
     });
 
-      ref.onClose.subscribe(result => {
-        if (result==true) {
-          console.log(row)
-          console.log(result);
+    ref.onClose.subscribe(result => {
+      if (result==true) {
+        console.log(row)
+        console.log(result);
 
-          this.handleDeleteUser(row)
+        this.handleDeleteUser(row)
 
-        } else {
-          console.log('modal cerrado');
-        }
-      });
+      } else {
+        console.log('modal cerrado');
+      }
+    });
 
   }
 
@@ -261,6 +263,4 @@ export class UserManagementComponent {
       }
     });
   }
-
-
 }

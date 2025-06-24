@@ -46,3 +46,19 @@
   height: 100%;
   padding-right: 0.5rem;
 }
+
+.autocomplete-full {
+  width: 100% !important;
+}
+
+.autocomplete-full .p-inputwrapper,
+.autocomplete-full .p-autocomplete,
+.autocomplete-full .p-autocomplete-input {
+  width: 100% !important;
+}
+
+.autocomplete-full input {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+

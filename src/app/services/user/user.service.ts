@@ -9,8 +9,9 @@ import {UserInfo} from "../../models/user/user";
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/users'; // URL de tu API
+  //private apiUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/users'; // URL de tu API
 
+ private apiUrl = 'http://localhost:8083/api/pagaPe/v1/users'; // Cambia la URL según tu backend
 
   constructor(private http: HttpClient) {
 
@@ -57,4 +58,20 @@ export class UserService {
 
     return this.http.post<any>(`${this.apiUrl}/nameAndEmail`, body);
   }
+
+  checkDniExists(dni: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/dni/${dni}`, { headers });
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/email/${email}`, { headers });
+  }
+
+  checkPhoneExists(phone: string): Observable<boolean> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<boolean>(`${this.apiUrl}/check/phone/${phone}`, { headers });
+  }
+
 }

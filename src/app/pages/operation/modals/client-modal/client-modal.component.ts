@@ -5,8 +5,8 @@ import { CommonModule } from "@angular/common";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextModule } from "primeng/inputtext";
 import { ButtonModule } from "primeng/button";
-import { ClientService } from '../../../../services/client.service';
-import { Client } from '../../../../models/client.model';
+import { ClientService } from '../../../../services/client-managament/client.service';
+import {Client, ClientRequest} from '../../../../models/client.model';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
@@ -29,7 +29,7 @@ export class ClientModalComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(
-    public ref: DynamicDialogRef, 
+    public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private clientService: ClientService,
     private messageService: MessageService
@@ -37,7 +37,7 @@ export class ClientModalComponent implements OnInit {
 
   ngOnInit() {
     this.isEditing = this.config.data.mode === 'Editar';
-    
+
     if (this.isEditing && this.config.data.client) {
       const client = this.config.data.client;
       this.clientId = client.id;
@@ -52,15 +52,16 @@ export class ClientModalComponent implements OnInit {
     this.showError = false;
     this.isLoading = true;
 
-    const clientData: Client = {
+    const clientData: ClientRequest = {
       userFirstName: this.name,
       userLastName: this.lastname,
       userEmail: this.email,
-      userPhone: this.number
+      userPhone: this.number,
+      active: true
     };
 
     if (this.isEditing && this.clientId) {
-      // Actualizar cliente existente
+
       this.clientService.updateClient(this.clientId, clientData).subscribe({
         next: (result) => {
           this.isLoading = false;
@@ -100,13 +101,13 @@ export class ClientModalComponent implements OnInit {
 
   private handleError(error: any) {
     this.showError = true;
-    
+
     if (error.status === 400 && error.message.includes('número de teléfono')) {
       this.errorMessage = error.message;
     } else {
       this.errorMessage = 'Ocurrió un error al procesar la solicitud. Por favor, inténtelo de nuevo.';
     }
-    
+
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
