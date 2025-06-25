@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface AuthenticationResponse {
   user_id: number;
@@ -12,8 +13,7 @@ export interface AuthenticationResponse {
 })
 export class AuthService {
 
- //private baseUrl = 'https://pagapeapi-eqf8bchnbbfaaree.canadacentral-01.azurewebsites.net/api/pagaPe/v1/auth'; // Cambia la URL según tu backend
-  private baseUrl = 'http://localhost:8083/api/pagaPe/v1/auth'; // Cambia la URL según tu backend
+  private baseUrl = `${environment.apiUrl}/api/pagaPe/v1/auth`;
 
 
   private user: any;
