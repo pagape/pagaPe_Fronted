@@ -2,12 +2,14 @@
   <div class="modal-header uflex uflex-jbtw">
     <h2 class="headingst"> {{ config.data.name }} servicio de cliente</h2>
   </div>
+  
+  <p-toast position="top-right"></p-toast>
 
   <div class="modal-body">
     <form #formRef="ngForm" (ngSubmit)="guardar()" class="uflex-v gap30 w100">
 
       <div class="uflex-v gap10 ">
-        <label for="name" class="fw-bold">Cliente</label>
+        <label for="name" class="fw-bold">Cliente *</label>
         <p-autoComplete
           id="name"
           [(ngModel)]="formData.cliente"
@@ -19,24 +21,30 @@
           forceSelection="true"
           class="autocomplete-full"
           name="cliente"
+          required
+          [class.error-field]="hasFieldError('cliente')"
         ></p-autoComplete>
+        <small *ngIf="hasFieldError('cliente')" class="error-text">{{getFieldError('cliente')}}</small>
       </div>
 
       <div class="uflex-v gap10 ">
-        <label for="service" class="fw-bold">Tipo de servicio: </label>
+        <label for="service" class="fw-bold">Tipo de servicio *</label>
         <p-select
           id="service"
-          placeholder=""
+          placeholder="Seleccione un servicio"
           [options]="services"
           [(ngModel)]="formData.servicio"
           optionLabel="name"
           optionValue="id"
           name="servicio"
+          required
+          [class.error-field]="hasFieldError('servicio')"
         ></p-select>
+        <small *ngIf="hasFieldError('servicio')" class="error-text">{{getFieldError('servicio')}}</small>
       </div>
 
       <div class="uflex-v gap10 w100">
-        <label for="daterange">Fecha registro</label>
+        <label for="daterange">Fecha registro *</label>
         <p-date-picker
           [(ngModel)]="formData.fecha"
           selectionMode="range"
@@ -45,23 +53,29 @@
           placeholder="Elige fecha inicio y fecha fin"
           showIcon="true"
           name="fecha"
+          required
+          [class.error-field]="hasFieldError('fecha')"
         ></p-date-picker>
+        <small *ngIf="hasFieldError('fecha')" class="error-text">{{getFieldError('fecha')}}</small>
       </div>
 
       <div class="uflex-v gap10 ">
-        <label for="whats" class="fw-bold">Periodicidad de pago: </label>
+        <label for="whats" class="fw-bold">Periodicidad de pago *</label>
         <p-select
           id="whats"
-          placeholder=""
+          placeholder="Seleccione periodicidad"
           [options]="payments"
           [(ngModel)]="formData.paymentFrequency"
           name="paymentFrequency"
+          required
+          [class.error-field]="hasFieldError('paymentFrequency')"
         ></p-select>
+        <small *ngIf="hasFieldError('paymentFrequency')" class="error-text">{{getFieldError('paymentFrequency')}}</small>
       </div>
 
       <div class="uflex-v gap10 column">
         <label class="font-bold block mb-2" for="peso">
-          Monto
+          Monto *
         </label>
         <p-inputnumber
           [(ngModel)]="formData.amount"
@@ -71,14 +85,24 @@
           currency="PEN"
           locale="es-PE"
           name="amount"
+          [min]="0.01"
+          required
+          [class.error-field]="hasFieldError('amount')"
         ></p-inputnumber>
+        <small *ngIf="hasFieldError('amount')" class="error-text">{{getFieldError('amount')}}</small>
+      </div>
+
+      <div *ngIf="showError" class="error-message">
+        <p>{{errorMessage}}</p>
       </div>
 
       <div class="uflex uflex-center gap30 w100">
-        <button class="btn-primary uflex uflex-center" type="submit">
-          <i class="material-symbols-outlined">post_add</i> Guardar
+        <button class="btn-primary uflex uflex-center" type="submit" [disabled]="isLoading">
+          <i class="material-symbols-outlined">post_add</i> 
+          <span *ngIf="!isLoading">Guardar</span>
+          <span *ngIf="isLoading">Guardando...</span>
         </button>
-        <button class="btn-whitest uflex uflex-center" type="button" (click)="cancelar()">
+        <button class="btn-whitest uflex uflex-center" type="button" (click)="cancelar()" [disabled]="isLoading">
           <i class="material-symbols-outlined">cancel</i> Cancelar
         </button>
       </div>
