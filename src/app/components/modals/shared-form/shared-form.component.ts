@@ -10,6 +10,7 @@ import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {UserService} from "../../../services/user/user.service";
 import {NotificationService} from "../../../services/notification.service";
 import {AutoCompleteModule} from "primeng/autocomplete";
+import {CountryService} from "../../../services/country.service";
 
 
 
@@ -45,8 +46,10 @@ export class SharedFormComponent {
 
   // Patrones de validación
   private namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,50}$/;
-  private phonePattern = /^9[0-9]{8}$/; // Debe comenzar con 9 y tener 9 dígitos en total
   private dniPattern = /^[0-9]{8}$/; // Exactamente 8 dígitos
+  
+  // Default country for phone validation (can be made configurable)
+  private defaultCountry = 'PE'; // Peru
 
   // Lista de números de teléfono no válidos (secuencias repetitivas)
   private invalidPhoneNumbers = [
@@ -59,7 +62,8 @@ export class SharedFormComponent {
     public config: DynamicDialogConfig,
     public ref: DynamicDialogRef,
     private userService: UserService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private countryService: CountryService
   ) {}
 
   ngOnInit() {
@@ -98,28 +102,38 @@ export class SharedFormComponent {
     return true;
   }
 
-  // Validar formato de teléfono (9 dígitos comenzando con 9)
+  // Validar formato de teléfono usando CountryService
   validatePhoneFormat(phone: string): boolean {
-    // Verificar el formato básico
-    if (!this.phonePattern.test(phone)) {
-      this.fieldErrors['userPhone'] = 'El número de teléfono debe comenzar con 9 y tener exactamente 9 dígitos';
+    // Use CountryService for LATAM validation
+    if (!this.countryService.isValidPhone(phone, this.defaultCountry)) {
+      this.fieldErrors['userPhone'] = this.countryService.getPhoneValidationMessage(this.defaultCountry);
       this.animateField('userPhone');
       return false;
     }
 
-    // Verificar si es un número de teléfono no válido (secuencias repetitivas)
-    if (this.invalidPhoneNumbers.includes(phone)) {
-      this.fieldErrors['userPhone'] = 'El número de teléfono no es válido. No se permiten secuencias repetitivas o patrones simples';
-      this.animateField('userPhone');
-      return false;
-    }
+    // Additional Peru-specific validations for repetitive patterns
+    if (this.defaultCountry === 'PE') {
+      // Verificar si es un número de teléfono no válido (secuencias repetitivas)
+      if (this.invalidPhoneNumbers.includes(phone)) {
+        this.fieldErrors['userPhone'] = 'El número de teléfono no es válido. No se permiten secuencias repetitivas o patrones simples';
+        this.animateField('userPhone');
+        return false;
+      }
 
-    // Verificar si tiene más de 2 dígitos repetidos consecutivos
-    const hasRepeatingDigits = /([0-9])\1{2,}/.test(phone);
-    if (hasRepeatingDigits) {
-      this.fieldErrors['userPhone'] = 'El número de teléfono no debe contener más de 2 dígitos repetidos consecutivos';
-      this.animateField('userPhone');
-      return false;
+      // Verificar si tiene más de 2 dígitos repetidos consecutivos
+      const hasRepeatingDigits = /([0-9])\1{2,}/.test(phone);
+      if (hasRepeatingDigits) {
+        this.fieldErrors['userPhone'] = 'El número de teléfono no debe contener más de 2 dígitos repetidos consecutivos';
+        this.animateField('userPhone');
+        return false;
+      }
+
+      // Peru-specific: should start with 9
+      if (!phone.startsWith('9')) {
+        this.fieldErrors['userPhone'] = 'El número de teléfono debe comenzar con 9';
+        this.animateField('userPhone');
+        return false;
+      }
     }
 
     return true;

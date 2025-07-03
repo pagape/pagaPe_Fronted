@@ -146,9 +146,11 @@ export class ListClientsComponent implements OnInit {
         mode: 'Crear'
       },
       header: 'Crear nuevo cliente',
-      width: '500px',
+      width: '650px',
+      height: '80vh',
       modal: true,
       dismissableMask: true,
+      styleClass: 'client-modal-large'
     });
 
     ref.onClose.subscribe(result => {
@@ -170,9 +172,11 @@ export class ListClientsComponent implements OnInit {
         client: row
       },
       header: 'Editar cliente',
-      width: '500px',
+      width: '650px',
+      height: '80vh',
       modal: true,
       dismissableMask: true,
+      styleClass: 'client-modal-large'
     });
 
     ref.onClose.subscribe(result => {

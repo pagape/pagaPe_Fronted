@@ -19,8 +19,13 @@
   </div>
 
   <div>
-    <app-table [columns]="columns" [data]="data" [actions]="actions"
-    >
+    <app-table 
+      [columns]="columns" 
+      [data]="data" 
+      [actions]="actions"
+      [showPaginator]="true"
+      [totalRecords]="data.length"
+      [sortOrder]="1">
     </app-table>
   </div>
 </div>

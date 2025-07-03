@@ -31,40 +31,56 @@ export class TableComponent<T> implements OnChanges {
   @Input() totalRecords: number = 0;
   @Input() transparentHeader: boolean = false;
   paginatedData: any[] = [];
-  rowsPerPage = 5; // Filas por página
+  rowsPerPage = 10; // Default rows per page - aligned with template
   currentPage = 0;
   @Input() sortOrder: number = 1;
+  first = 0; // Track first record index
 
   @Output() lazyLoad = new EventEmitter<any>();
   @Output() checkboxChange = new EventEmitter<{ row: any, checked: boolean }>();
 
   ngOnInit() {
-    // Inicializar la paginación
-    this.updatePagination();
+    // Initialize pagination with proper setup
+    this.initializePagination();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // Si cambia el conjunto de datos, actualizar la paginación
-    if (changes['data']) {
-      this.updatePagination();
+    // When data changes, update pagination
+    if (changes['data'] && this.data) {
+      // Reset to first page when data changes
+      this.first = 0;
+      this.currentPage = 0;
       
-      // Si no se proporciona totalRecords, usar la longitud de los datos
+      // Set total records if not provided
       if (!this.totalRecords) {
         this.totalRecords = this.data.length;
       }
+      
+      // Update pagination display
+      this.updatePagination();
     }
   }
 
+  private initializePagination() {
+    // Initialize with first page if paginator is enabled
+    if (this.showPaginator) {
+      this.updatePagination();
+    } else {
+      // If no paginator, show all data
+      this.paginatedData = [...this.data];
+    }
+  }
+  
   private updatePagination() {
-    // Si no hay datos, no hacer nada
+    // Handle empty data
     if (!this.data || this.data.length === 0) {
       this.paginatedData = [];
       return;
     }
 
-    // Emitir evento de carga perezosa para obtener datos paginados
+    // Trigger lazy load event for current page
     this.onLazyLoad({
-      first: this.currentPage * this.rowsPerPage,
+      first: this.first,
       rows: this.rowsPerPage,
       sortField: null,
       sortOrder: this.sortOrder,
@@ -77,38 +93,63 @@ export class TableComponent<T> implements OnChanges {
   }
 
   onLazyLoad(event: any) {
-    // Emitir el evento para que el componente padre pueda manejar la paginación
+    // Update internal state
+    this.first = event.first || 0;
+    this.rowsPerPage = event.rows || this.rowsPerPage;
+    this.currentPage = Math.floor(this.first / this.rowsPerPage);
+    
+    // Emit event for parent component to handle server-side pagination if needed
     this.lazyLoad.emit(event);
     
-    // Si no hay un manejador para el evento lazyLoad, realizar la paginación localmente
+    // If parent component is handling pagination (has lazyLoad subscribers), don't do local pagination
     if (this.lazyLoad.observed) {
       return;
     }
     
-    // Paginación local
-    const first = event.first || 0;
-    const rows = event.rows || this.rowsPerPage;
-    
-    // Calcular el índice de inicio y fin para la página actual
+    // Perform local pagination
+    this.performLocalPagination(this.first, this.rowsPerPage);
+  }
+  
+  private performLocalPagination(first: number, rows: number) {
+    // Calculate start and end indices
     const startIndex = first;
     const endIndex = first + rows;
     
-    // Obtener los datos para la página actual
+    // Slice data for current page
     this.paginatedData = this.data.slice(startIndex, endIndex);
   }
 
   onPageChange(event: any) {
     this.currentPage = event.page;
     this.rowsPerPage = event.rows;
-    const first = event.first ?? (this.currentPage * this.rowsPerPage);
+    this.first = event.first ?? (this.currentPage * this.rowsPerPage);
     
-    // Actualizar la paginación
+    // Update pagination display
     this.onLazyLoad({
-      first,
+      first: this.first,
       rows: this.rowsPerPage,
       sortField: null,
       sortOrder: this.sortOrder,
       filters: {},
     });
+  }
+  
+  // Utility method to reset pagination to first page
+  resetPagination() {
+    this.first = 0;
+    this.currentPage = 0;
+    this.updatePagination();
+  }
+  
+  // Utility method to get current pagination info
+  getPaginationInfo() {
+    return {
+      currentPage: this.currentPage + 1, // 1-based for display
+      totalPages: Math.ceil((this.totalRecords || this.data.length) / this.rowsPerPage),
+      totalRecords: this.totalRecords || this.data.length,
+      recordsPerPage: this.rowsPerPage,
+      first: this.first,
+      last: Math.min(this.first + this.rowsPerPage, this.totalRecords || this.data.length)
+    };
   }
 }

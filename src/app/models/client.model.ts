@@ -16,6 +16,11 @@ export interface ClientRequest {
   userLastName: string;
   userEmail: string;
   userPhone: string;
+  country?: string;
+  amount: number;
+  issueDate: string; // ISO date format
+  dueDate: string;   // ISO date format
+  paymentFrequency?: 'QUINCENAL' | 'FIN_DE_MES';
   active?: boolean;
 }
 

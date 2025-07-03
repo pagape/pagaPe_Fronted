@@ -1,12 +1,17 @@
 <div class="utablecont">
   <p-table
-    [value]="data"
+    [value]="showPaginator ? paginatedData : data"
     styleClass="utable"
-    [paginator]="true"
-    [rows]="10"
-    [rowsPerPageOptions]="[3, 10, 20]"
+    [paginator]="showPaginator"
+    [rows]="rowsPerPage"
+    [totalRecords]="totalRecords || data.length"
+    [rowsPerPageOptions]="[5, 10, 20, 50]"
     [sortOrder]="sortOrder"
-    paginatorDropdownAppendTo="body">
+    [lazy]="true"
+    (onLazyLoad)="onLazyLoad($event)"
+    paginatorDropdownAppendTo="body"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+    [showCurrentPageReport]="true">
     <ng-template pTemplate="header">
       <tr>
         @for (col of columns; track col) {
