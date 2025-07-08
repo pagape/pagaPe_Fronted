@@ -153,6 +153,21 @@ export class ListClientsComponent implements OnInit {
   executeFilters() {
     this.isLoading = true;
     let filtered = [...this.allClients];
+    
+    // Debug inicial: mostrar todos los clientes y sus fechas
+    console.log('=== DEBUG CLIENTES ===');
+    console.log('Total clientes:', this.allClients.length);
+    if (this.allClients.length > 0) {
+      this.allClients.slice(0, 3).forEach((client, index) => {
+        console.log(`Cliente ${index + 1}:`, {
+          nombre: client.userFirstName,
+          fechaCreacion: client.created,
+          fechaParsed: new Date(client.created),
+          activo: client.active,
+          typeof: typeof client.created
+        });
+      });
+    }
 
     // Aplicar filtro de texto localmente si hay búsqueda (solo nombres y apellidos)
     if (this.searchText && this.searchText.trim() !== '') {
@@ -170,20 +185,47 @@ export class ListClientsComponent implements OnInit {
       filtered = filtered.filter(item => item.active === this.status);
     }
 
-    // Aplicar filtro de fecha
-    if (this.dateRange?.length === 2) {
-      const [start, end] = this.dateRange;
+    // Aplicar filtro de fecha basado en cómo se ve en el frontend
+    if (this.dateRange && this.dateRange.length >= 1 && this.dateRange[0]) {
+      const start = this.dateRange[0];
+      const end = this.dateRange[1] || start;
       
-      // Configurar las fechas para comparación completa del día
-      const startDate = new Date(start);
-      startDate.setHours(0, 0, 0, 0); // Inicio del día
+      // Convertir las fechas del filtro a string en formato local (como se ve en frontend)
+      const startDateString = start.toLocaleDateString('es-ES');
+      const endDateString = end.toLocaleDateString('es-ES');
       
-      const endDate = new Date(end);
-      endDate.setHours(23, 59, 59, 999); // Final del día
+      console.log('Filtro por fecha visual:', {
+        inicioFiltro: startDateString,
+        finFiltro: endDateString
+      });
       
       filtered = filtered.filter(item => {
-        const createdDate = new Date(item.created);
-        return createdDate >= startDate && createdDate <= endDate;
+        if (!item.created) return false;
+        
+        // Convertir la fecha del cliente evitando problemas de zona horaria
+        let clientDateString: string;
+        
+        if (item.created.includes('-')) {
+          // Si viene en formato YYYY-MM-DD, parsearlo directamente
+          const [year, month, day] = item.created.split('-');
+          clientDateString = `${parseInt(day)}/${parseInt(month)}/${year}`;
+        } else {
+          // Fallback al método original
+          const createdDate = new Date(item.created);
+          if (isNaN(createdDate.getTime())) return false;
+          clientDateString = createdDate.toLocaleDateString('es-ES');
+        }
+        
+        // Comparar las fechas como strings (como se ven visualmente)
+        const cumpleFiltro = this.isDateInRange(clientDateString, startDateString, endDateString);
+        
+        console.log('Cliente:', item.userFirstName, {
+          fechaOriginal: item.created,
+          fechaVisual: clientDateString,
+          cumpleFiltro: cumpleFiltro
+        });
+        
+        return cumpleFiltro;
       });
     }
 
@@ -198,15 +240,26 @@ export class ListClientsComponent implements OnInit {
       status: this.status,
       dateRange: this.dateRange,
       totalClients: this.allClients.length,
-      filteredClients: this.data.length
+      filteredClients: this.data.length,
+      clientesOriginalCount: this.allClients.length,
+      clientesFiltradosCount: filtered.length,
+      primerosClientes: this.allClients.slice(0, 3).map(c => ({
+        nombre: c.userFirstName,
+        fechaCreacion: c.created,
+        activo: c.active
+      }))
     });
 
     // Debug específico para fechas
-    if (this.dateRange?.length === 2) {
+    if (this.dateRange && this.dateRange.length >= 1 && this.dateRange[0]) {
+      const start = this.dateRange[0];
+      const end = this.dateRange[1] || start;
+      
       console.log('Filtro de fecha:', {
-        fechaInicio: this.dateRange[0],
-        fechaFin: this.dateRange[1],
-        esMismoDia: this.dateRange[0].toDateString() === this.dateRange[1].toDateString()
+        fechaInicio: start,
+        fechaFin: end,
+        esMismoDia: start.toDateString() === end.toDateString(),
+        soloUnaFecha: !this.dateRange[1]
       });
     }
 
@@ -323,5 +376,34 @@ export class ListClientsComponent implements OnInit {
     this.router.navigate(['/operation/client-history', row.id]);
   }
 
+  // Método para comparar fechas basado en cómo se ven en el frontend
+  private isDateInRange(clientDateString: string, startDateString: string, endDateString: string): boolean {
+    console.log('isDateInRange:', {
+      cliente: clientDateString,
+      inicio: startDateString,
+      fin: endDateString
+    });
+    
+    // Convertir strings de fecha "dd/mm/yyyy" a objetos Date para comparación
+    const parseSpanishDate = (dateStr: string): Date => {
+      const [day, month, year] = dateStr.split('/').map(Number);
+      return new Date(year, month - 1, day); // month - 1 porque Date usa meses base 0
+    };
+    
+    const clientDate = parseSpanishDate(clientDateString);
+    const startDate = parseSpanishDate(startDateString);
+    const endDate = parseSpanishDate(endDateString);
+    
+    const result = clientDate >= startDate && clientDate <= endDate;
+    
+    console.log('Comparación de fechas:', {
+      clienteParsed: clientDate,
+      inicioParsed: startDate,
+      finParsed: endDate,
+      resultado: result
+    });
+    
+    return result;
+  }
 
 }
