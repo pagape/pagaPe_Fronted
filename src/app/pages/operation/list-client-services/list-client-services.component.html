@@ -8,7 +8,7 @@
 
     </div>
     <article class="uflex-jbtw uflex cardElements mb25 p-3">
-      <div class="uflex gap20 " >
+      <div class="uflex gap30 uflex-wrap mrequal" >
         <div class="input-icon brfield  ">
           <i class="material-symbols-outlined">search</i>
           <input  class="w100 search" [(ngModel)]="searchText"  type="text" pInputText
@@ -37,7 +37,7 @@
         <div class="uflex gap10 aicenter">
           <label for="bussiness" class="fw-bold">Tipo de servicio: </label>
           <p-select id="bussiness"
-                    [options]="services" [(ngModel)]="serviceSelected" 
+                    [options]="services" [(ngModel)]="serviceSelected"
                     placeholder="Seleccionar servicio"
                     (onChange)="applyFilters()">
           </p-select>

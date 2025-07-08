@@ -5,10 +5,12 @@ p-inputnumber{
   font-size: 16px;
 
 }
-p-datepicker {
-  width: 100%;
-}
 
+p-datepicker {
+  .p-datepicker {
+    width: 100% !important;
+  }
+}
 
 ::ng-deep input#peso.p-inputtext.p-component.p-inputnumber-input {
   height: 48px;
