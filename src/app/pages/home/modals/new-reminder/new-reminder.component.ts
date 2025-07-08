@@ -11,10 +11,11 @@ import {ServiceService} from "../../../../services/client-managament/service.ser
 import {ReminderRequest} from "../../../../models/reminder.model";
 import {Service} from "../../../../models/service.model";
 import {NotificationService} from "../../../../services/notification.service";
+import {DatePickerModule} from "primeng/datepicker";
 
 @Component({
   selector: 'app-new-reminder',
-  imports: [RadioButtonModule,SelectModule,CommonModule,FormsModule,InputTextModule, InputNumberModule],
+  imports: [RadioButtonModule,DatePickerModule,SelectModule,CommonModule,FormsModule,InputTextModule, InputNumberModule],
   templateUrl: './new-reminder.component.html',
   styleUrl: './new-reminder.component.css'
 })
@@ -23,23 +24,25 @@ export class NewReminderComponent implements OnInit {
   selectedOption: any = null;
   numberSelected: any = null;
   serviceSelected: any = null;
+
+  scheduleDay:any=null;
   name: string = "";
   desc: string = "";
   peso: number = 0;
   loading: boolean = false;
   services: Service[] = [];
-  
+
   options: any[] = [
     { name: 'Si', key: 'S' },
     { name: 'No', key: 'N' },
   ];
-  
+
   numbers: any[] = [
     { label: '+51 999888777', value: '51999888777' }
   ];
 
   constructor(
-    public ref: DynamicDialogRef, 
+    public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private reminderService: ReminderService,
     private serviceService: ServiceService,
@@ -72,19 +75,21 @@ export class NewReminderComponent implements OnInit {
     }
 
     this.loading = true;
-    
-    const scheduledDate = new Date();
-    scheduledDate.setDate(scheduledDate.getDate() + this.peso);
-    
+
+    // const scheduledDate = new Date();
+    // scheduledDate.setDate(scheduledDate.getDate() + this.peso);
+
     const reminderRequest: ReminderRequest = {
       reminderName: this.name,
       description: this.desc,
       debtorFilter: this.selectedOption === 'S',
       serviceIdFilter: this.serviceSelected?.value || this.serviceSelected,
       relativeDays: this.peso,
-      scheduledDate: scheduledDate.toISOString().split('T')[0], // Format: YYYY-MM-DD
+      scheduledDate:this.scheduleDay.toISOString().split('T')[0],
       companyWhatsappNumber: this.numberSelected?.value || this.numberSelected
     };
+
+    //console.log(reminderRequest);
 
     this.reminderService.createReminder(reminderRequest).subscribe({
       next: (response) => {
@@ -106,27 +111,27 @@ export class NewReminderComponent implements OnInit {
 
   private showValidationErrors(): void {
     const errors: string[] = [];
-    
+
     if (!this.name) {
       errors.push('Nombre es requerido');
     }
-    
+
     if (!this.serviceSelected) {
       errors.push('Tipo de servicio es requerido');
     }
-    
+
     if (!this.numberSelected) {
       errors.push('Número de WhatsApp es requerido');
     }
-    
+
     if (this.selectedOption === null || this.selectedOption === undefined) {
       errors.push('Debe seleccionar si filtrar solo deudores');
     }
-    
+
     if (this.peso < 0) {
       errors.push('La cantidad de días no puede ser negativa');
     }
-    
+
     if (errors.length > 0) {
       this.notificationService.warning(
         `Por favor complete los siguientes campos: ${errors.join(', ')}`,
@@ -136,10 +141,10 @@ export class NewReminderComponent implements OnInit {
   }
 
   private isFormValid(): boolean {
-    return !!(this.name && 
+    return !!(this.name &&
               this.serviceSelected &&
-              this.selectedOption !== null && 
-              this.numberSelected && 
+              this.selectedOption !== null &&
+              this.numberSelected &&
               this.peso >= 0);
   }
 

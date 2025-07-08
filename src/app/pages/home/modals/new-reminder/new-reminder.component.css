@@ -5,6 +5,9 @@ p-inputnumber{
   font-size: 16px;
 
 }
+p-datepicker {
+  width: 100%;
+}
 
 
 ::ng-deep input#peso.p-inputtext.p-component.p-inputnumber-input {
@@ -51,11 +54,11 @@ input{
     padding: 15px;
     max-height: 80vh;
   }
-  
+
   .modal-body {
     max-height: calc(80vh - 80px);
   }
-  
+
   ::ng-deep .responsive-dialog .p-dialog {
     margin: 0.5rem !important;
     width: calc(100vw - 1rem) !important;
@@ -68,22 +71,22 @@ input{
     padding: 10px;
     max-height: 85vh;
   }
-  
+
   .modal-body {
     max-height: calc(85vh - 60px);
   }
-  
+
   ::ng-deep .responsive-dialog .p-dialog {
     margin: 0.25rem !important;
     width: calc(100vw - 0.5rem) !important;
     max-width: calc(100vw - 0.5rem) !important;
   }
-  
+
   /* Ajustar elementos del formulario en móviles */
   input, textarea, p-select {
     font-size: 16px !important;
   }
-  
+
   .uflex.gap30 {
     gap: 15px !important;
   }

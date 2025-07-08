@@ -19,7 +19,7 @@
       <div class="uflex-v gap10 ">
         <label for="service" class="fw-bold">Tipo de servicio: <span class="required">*</span></label>
         <p-select id="service" placeholder="Selecciona un servicio"
-                  [options]="services" [(ngModel)]="serviceSelected" 
+                  [options]="services" [(ngModel)]="serviceSelected"
                   optionLabel="label" optionValue="value">
         </p-select>
       </div>
@@ -27,7 +27,7 @@
       <div class="uflex-v gap10 ">
         <label for="whats" class="fw-bold">Numero de Whatssapp: <span class="required">*</span></label>
         <p-select id="whats" placeholder="Selecciona un número"
-                  [options]="numbers" [(ngModel)]="numberSelected" 
+                  [options]="numbers" [(ngModel)]="numberSelected"
                   optionLabel="label" optionValue="value">
         </p-select>
       </div>
@@ -53,6 +53,20 @@
 
       </div>
 
+      <div class="uflex-v gap10 w100">
+        <label for="scheduleDay">Fecha de envio</label>
+        <p-date-picker
+          [(ngModel)]="scheduleDay"
+          selectionMode="single"
+          inputId="scheduleDay"
+          dateFormat="dd/mm/yy"
+          placeholder="Elige fecha "
+          showIcon="true"
+          name="fecha"
+          class="w100"
+        ></p-date-picker>
+      </div>
+
       <div class="uflex-v gap10  ">
 
         <label  class="font-bold block mb-2"> Descripción </label>
@@ -65,7 +79,7 @@
 
         <div class="uflex uflex-center gap30 w100 ">
           <button class="btn-primary uflex uflex-center" (click)="guardar()" [disabled]="loading">
-            <i class="material-symbols-outlined">post_add</i> 
+            <i class="material-symbols-outlined">post_add</i>
             {{ loading ? 'Guardando...' : 'Guardar' }}
           </button>
           <button class="btn-whitest uflex uflex-center" (click)="cancelar()" [disabled]="loading">
