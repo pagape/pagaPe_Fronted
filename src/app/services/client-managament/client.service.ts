@@ -19,47 +19,61 @@ export class ClientService {
     });
   }
 
-  // Obtener todos los clientes
-  getAllClients(): Observable<any[]> {
+  getAllClients(): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.get<any[]>(this.apiUrl, { headers })
+    return this.http.get<any>(this.apiUrl, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Obtener un cliente por ID
+  getClientsByStatus(status: boolean): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.apiUrl}/status/${status}`, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  searchClients(query?: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const params = query ? `?query=${encodeURIComponent(query)}` : '';
+    return this.http.get<any>(`${this.apiUrl}/search${params}`, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  filterClientsByLetter(letter: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.apiUrl}/filter?letter=${letter}`, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
   getClientById(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Crear un nuevo cliente
   createClient(client: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post<any>(this.apiUrl, client, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Actualizar un cliente existente
   updateClient(id: number, client: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.put<any>(`${this.apiUrl}/${id}`, client, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Eliminar un cliente
   deleteClient(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Obtener historial de modificaciones de un cliente
   getClientHistory(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}/history`, { headers })
       .pipe(catchError(this.handleError));
   }
+
 
   // Manejo de errores
   private handleError(error: HttpErrorResponse) {

@@ -19,36 +19,31 @@ export class ClientServiceService {
     });
   }
 
-  // Obtener todos los clientes
   getAllClientServices(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(this.apiUrl, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Obtener un cliente por ID
-  getClientServById(id: number): Observable<any> {
+  getClientServiceById(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Crear un nuevo cliente
-  createClientService(client: any): Observable<any> {
+  createClientService(clientService: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(this.apiUrl, client, { headers })
+    return this.http.post<any>(this.apiUrl, clientService, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Actualizar un cliente existente
-  updateClientService(id: number, client: any): Observable<any> {
+  updateClientService(id: number, clientService: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.patch<any>(`${this.apiUrl}/${id}`, client, { headers })
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, clientService, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  // Eliminar un cliente
-  deleteClient(id: number): Observable<any> {
+  deleteClientService(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));

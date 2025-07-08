@@ -50,6 +50,7 @@ export class ListClientServicesComponent implements OnInit{
       name: 'serviceId',
       type: 'select',
       required: true,
+      displayField: 'nombreServicio',
       options: this.servicios
     },
     {
@@ -182,7 +183,7 @@ export class ListClientServicesComponent implements OnInit{
           ...client,
           nombreCliente: client.client?.userFirstName ?? '',
           apellidoCliente: client.client?.userLastName ?? '',
-          nombreServicio: client.service?.name ?? ''
+          nombreServicio: client.service?.nombreServicio ?? ''
         }));
 
         console.log('Datos normalizados:', this.data);
@@ -201,11 +202,20 @@ export class ListClientServicesComponent implements OnInit{
 
   loadClients() {
     this.clientService.getAllClients().subscribe({
-      next: (clients) => {
-        console.log(clients)
-        this.clients = clients;
-        this.fields[0].options= clients
-        console.log(this.clients)
+      next: (response) => {
+        console.log('API Response:', response)
+        // Check if response has clients property (API returns object with clients array)
+        if (response && response.clients) {
+          this.clients = response.clients;
+        } else if (Array.isArray(response)) {
+          // If it's directly an array
+          this.clients = response;
+        } else {
+          console.error('Unexpected response format:', response);
+          this.clients = [];
+        }
+        this.fields[0].options = this.clients;
+        console.log('Clients array:', this.clients)
         console.log("los field: "+ this.fields[0].options)
 
       },
@@ -215,7 +225,7 @@ export class ListClientServicesComponent implements OnInit{
           summary: 'Error',
           detail: 'No se pudieron cargar los clientes'
         });
-
+        this.clients = [];
       }
     });
 
@@ -227,9 +237,9 @@ export class ListClientServicesComponent implements OnInit{
     this.serviceService.getAllServices().subscribe({
       next: (s) => {
         console.log(s)
-
-        this.fields[1].options= s
-        console.log(this.clients)
+        this.servicios = s;
+        this.fields[1].options = s;
+        console.log('Servicios cargados:', this.servicios)
         console.log("los field: "+ this.fields[1].options)
 
       },
@@ -237,7 +247,7 @@ export class ListClientServicesComponent implements OnInit{
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudieron cargar los clientes'
+          detail: 'No se pudieron cargar los servicios'
         });
 
       }
@@ -337,7 +347,7 @@ export class ListClientServicesComponent implements OnInit{
 
     ref.onClose.subscribe((confirmed) => {
       if (confirmed) {
-        this.service.deleteClient(row.id).subscribe({
+        this.service.deleteClientService(row.id).subscribe({
           next: () => {
             this.messageService.add({
               severity: 'success',
@@ -346,7 +356,7 @@ export class ListClientServicesComponent implements OnInit{
             });
             this.loadData();
           },
-          error: (error) => {
+          error: (error: any) => {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',

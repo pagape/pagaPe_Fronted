@@ -13,9 +13,9 @@
           [(ngModel)]="formData.cliente"
           [suggestions]="filteredClients"
           (completeMethod)="filterClients($event)"
-          [field]="'userFirstName'"
+          field="fullName"
           [dropdown]="true"
-          [placeholder]="'Escribe'"
+          placeholder="Escribe"
           forceSelection="true"
           class="autocomplete-full"
           name="cliente"
@@ -29,7 +29,7 @@
           placeholder=""
           [options]="services"
           [(ngModel)]="formData.servicio"
-          optionLabel="name"
+          optionLabel="nombreServicio"
           optionValue="id"
           name="servicio"
         ></p-select>
@@ -55,6 +55,8 @@
           placeholder=""
           [options]="payments"
           [(ngModel)]="formData.paymentFrequency"
+          optionLabel="name"
+          optionValue="id"
           name="paymentFrequency"
         ></p-select>
       </div>
