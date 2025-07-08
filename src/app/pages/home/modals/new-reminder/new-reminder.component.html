@@ -11,48 +11,52 @@
     <div class="uflex-v gap30  w100">
 
       <div class="uflex-v gap10 ">
-        <label for="name" class="fw-bold">Nombre</label>
-        <input type="text"  id="name" [(ngModel)]="name" placeholder="Escribe"/>
+        <label for="name" class="fw-bold">Nombre <span class="required">*</span></label>
+        <input type="text"  id="name" [(ngModel)]="name" placeholder="Escribe" required/>
       </div>
 
 
       <div class="uflex-v gap10 ">
-        <label for="service" class="fw-bold">Tipo de servicio: </label>
-        <p-select id="service" placeholder=""
-                  [options]="services" [(ngModel)]="serviceSelected" >
+        <label for="service" class="fw-bold">Tipo de servicio: <span class="required">*</span></label>
+        <p-select id="service" placeholder="Selecciona un servicio"
+                  [options]="services" [(ngModel)]="serviceSelected" 
+                  optionLabel="label" optionValue="value">
         </p-select>
       </div>
 
       <div class="uflex-v gap10 ">
-        <label for="whats" class="fw-bold">Numero de Whatssapp: </label>
-        <p-select id="whats" placeholder=""
-                  [options]="numbers" [(ngModel)]="numberSelected" >
+        <label for="whats" class="fw-bold">Numero de Whatssapp: <span class="required">*</span></label>
+        <p-select id="whats" placeholder="Selecciona un número"
+                  [options]="numbers" [(ngModel)]="numberSelected" 
+                  optionLabel="label" optionValue="value">
         </p-select>
       </div>
 
 
-      <div class="uflex aicenter uflex-center gap30">
-      @for(option of options; track option){
-        <div class="uflex-center uflex gap10">
-          <p-radiobutton [inputId]="option.key" name="option" [value]="option.key" [(ngModel)]="selectedOption"></p-radiobutton>
-          <label [for]="option.key" class="ml-2">{{ option.name }}</label>
+      <div class="uflex-v gap10">
+        <label class="fw-bold">¿Filtrar solo deudores? <span class="required">*</span></label>
+        <div class="uflex aicenter uflex-center gap30">
+          @for(option of options; track option){
+            <div class="uflex-center uflex gap10">
+              <p-radiobutton [inputId]="option.key" name="option" [value]="option.key" [(ngModel)]="selectedOption"></p-radiobutton>
+              <label [for]="option.key" class="ml-2">{{ option.name }}</label>
+            </div>
+          }
         </div>
-        }
-
-    </div>
+      </div>
       <div class="uflex-v gap10 column ">
 
         <label class="font-bold block mb-2" for="peso">
           Cantidad de dias
         </label>
-        <p-inputnumber [(ngModel)]="peso"  [showButtons]="true" buttonLayout="horizontal" inputId="peso" spinnerMode="horizontal" [step]="1.0" ></p-inputnumber>
+        <p-inputnumber [(ngModel)]="peso"  [showButtons]="true" buttonLayout="horizontal" inputId="peso" spinnerMode="horizontal" [step]="1.0" [min]="0" [max]="365"></p-inputnumber>
 
       </div>
 
       <div class="uflex-v gap10  ">
 
         <label  class="font-bold block mb-2"> Descripción </label>
-        <textarea  rows="7"  id="mercaderia" [(ngModel)]="desc" placeholder="Escribe"></textarea>
+        <textarea  rows="4"  id="mercaderia" [(ngModel)]="desc" placeholder="Escribe"></textarea>
         <span>*Máximo 50 caracteres</span>
 
 
@@ -60,10 +64,11 @@
 
 
         <div class="uflex uflex-center gap30 w100 ">
-          <button class="btn-primary uflex uflex-center" (click)="guardar()">
-            <i class="material-symbols-outlined">post_add</i> Guardar
+          <button class="btn-primary uflex uflex-center" (click)="guardar()" [disabled]="loading">
+            <i class="material-symbols-outlined">post_add</i> 
+            {{ loading ? 'Guardando...' : 'Guardar' }}
           </button>
-          <button class="btn-whitest uflex uflex-center" (click)="cancelar()">
+          <button class="btn-whitest uflex uflex-center" (click)="cancelar()" [disabled]="loading">
             <i class="material-symbols-outlined">cancel</i> Cancelar
           </button>
         </div>

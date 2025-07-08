@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Reminder, ReminderRequest, ProcessReminderResponse } from '../../models/reminder.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,27 +21,27 @@ export class ReminderService {
     });
   }
 
-  getAllReminders(): Observable<any[]> {
+  getAllReminders(): Observable<Reminder[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<any[]>(this.apiUrl, { headers })
+    return this.http.get<Reminder[]>(this.apiUrl, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  getReminderById(id: number): Observable<any> {
+  getReminderById(id: number): Observable<Reminder> {
     const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers })
+    return this.http.get<Reminder>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  createReminder(reminder: any): Observable<any> {
+  createReminder(reminder: ReminderRequest): Observable<Reminder> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(this.apiUrl, reminder, { headers })
+    return this.http.post<Reminder>(this.apiUrl, reminder, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  processRemindersNow(): Observable<any> {
+  processRemindersNow(): Observable<ProcessReminderResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(`${this.apiUrl}/process-now`, null, { headers })
+    return this.http.post<ProcessReminderResponse>(`${this.apiUrl}/process-now`, null, { headers })
       .pipe(catchError(this.handleError));
   }
 
