@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -25,15 +25,42 @@ export class ConversationService {
       .pipe(catchError(this.handleError));
   }
 
-  getSentimentMetrics(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/metrics/sentiment`, { headers })
-      .pipe(catchError(this.handleError));
+  getSentimentMetrics(startDate?: string, endDate?: string): Observable<any> {
+    const headers: HttpHeaders = this.getAuthHeaders();
+
+    const body: any = {};
+    if (startDate) {
+      body.startDate = startDate;
+    }
+    if (endDate) {
+      body.endDate = endDate;
+    }
+
+    return this.http.post<any>(
+      `${this.apiUrl}/metrics/sentiment`,
+      body,
+      { headers }
+    );
   }
-  getStatusMetrics(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/metrics/status-finish`, { headers })
-      .pipe(catchError(this.handleError));
+
+
+  getStatusMetrics(startDate?: string, endDate?: string): Observable<any> {
+    const headers: HttpHeaders = this.getAuthHeaders();
+
+    const body: any = {};
+    if (startDate) {
+      body.startDate = startDate;
+    }
+    if (endDate) {
+      body.endDate = endDate;
+    }
+
+    return this.http.post<any>(
+      `${this.apiUrl}/metrics/status-finish`,
+      body,
+      { headers }
+    );
+
   }
   getClientsByStatus(status: boolean): Observable<any[]> {
     const headers = this.getAuthHeaders();

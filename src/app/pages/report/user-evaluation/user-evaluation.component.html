@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="uflex-v gap10 ">
-    <p-datepicker [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="range" [readonlyInput]="true"></p-datepicker>
+    <p-datepicker [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="range" [readonlyInput]="true"  (onSelect)="onDateRangeSelected()"></p-datepicker>
 
   </div>
 </div>

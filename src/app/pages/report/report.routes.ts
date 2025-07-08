@@ -8,16 +8,10 @@ export const REPORT_ROUTES: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'survey',
+        redirectTo: 'user-evaluation',
         pathMatch: 'full',
       },
-      {
-        path: 'survey',
-        loadComponent: () =>
-          import('./survey/survey.component').then(
-            (c) => c.SurveyComponent
-          ),
-      },
+
       {
         path: 'user-evaluation',
         loadComponent: () =>

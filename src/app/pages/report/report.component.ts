@@ -44,11 +44,7 @@ export class ReportComponent {
 
   ngOnInit() {
     this.items = [
-      {
-        label: 'Encuesta',
-        icon: 'pending_actions',
-        routerLink: 'survey',
-      },
+
       {
         label: 'Evaluacion de usuario',
         icon: 'pending_actions',

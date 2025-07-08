@@ -83,8 +83,8 @@ export class UserEvaluationComponent implements AfterViewInit{
       if (chart.canvas.id !== 'doughnutChart') return;
 
       const { ctx, width, height } = chart;
-      const total = this.chartItems.reduce((sum, item) => sum + item.value, 0);
-
+      //const total = this.chartItems.reduce((sum, item) => sum + item.value, 0);
+const total= this.total
 
       ctx.save();
       ctx.textAlign = 'center';
@@ -161,6 +161,7 @@ export class UserEvaluationComponent implements AfterViewInit{
     const canvas = this.doughnutCanvas.nativeElement as HTMLCanvasElement;
     canvas.id = 'doughnutChart';
     Chart.register(this.centerTextPlugin);
+    console.log(this.rangeDates);
   }
 
 
@@ -186,8 +187,29 @@ export class UserEvaluationComponent implements AfterViewInit{
 
   }
 
-  loadSentimentMetrics() {
-    this.conversationService.getSentimentMetrics().subscribe({
+  onDateRangeSelected() {
+    if (this.rangeDates && this.rangeDates.length === 2) {
+      const start = this.formatDate(this.rangeDates[0]);
+      const end = this.formatDate(this.rangeDates[1]);
+
+      console.log("Start date:", start);
+      console.log("End date:", end);
+
+      this.loadSentimentMetrics(start, end);
+      this.loadStatusMetrics(start,end)
+    } else {
+      console.log("No se seleccionó rango de fechas todavía");
+      this.loadSentimentMetrics();
+      this.loadStatusMetrics();
+    }
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString();
+  }
+
+  loadSentimentMetrics(starDate?:string, endDate?:string) {
+    this.conversationService.getSentimentMetrics(starDate,endDate).subscribe({
       next: (response) => {
         console.log('Respuesta cruda:', response);
 
@@ -259,8 +281,8 @@ export class UserEvaluationComponent implements AfterViewInit{
     });
   }
 
-  loadStatusMetrics() {
-    this.conversationService.getStatusMetrics().subscribe({
+  loadStatusMetrics(starDate?:string, endDate?:string) {
+    this.conversationService.getStatusMetrics(starDate,endDate).subscribe({
       next: (response) => {
         console.log('Respuesta cruda:', response);
 
