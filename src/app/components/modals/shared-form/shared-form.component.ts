@@ -173,27 +173,54 @@ export class SharedFormComponent {
         }
 
         if ('userDNI' in this.formData && (!this.isEditing || this.formData.userDNI !== this.originalData?.userDNI)) {
-          const dniExists = await firstValueFrom(this.userService.checkDniExists(this.formData.userDNI));
-          if (dniExists) {
-            this.fieldErrors['userDNI'] = 'Este DNI ya está registrado en el sistema';
+          console.log('Checking DNI:', this.formData.userDNI);
+          try {
+            const dniExists = await firstValueFrom(this.userService.checkDniExists(this.formData.userDNI));
+            console.log('DNI exists result:', dniExists);
+            if (dniExists) {
+              this.fieldErrors['userDNI'] = 'Este DNI ya está registrado en el sistema';
+              this.animateField('userDNI');
+              hasErrors = true;
+            }
+          } catch (error) {
+            console.error('Error al verificar DNI:', error);
+            this.fieldErrors['userDNI'] = 'Error al verificar DNI. Intente nuevamente.';
             this.animateField('userDNI');
             hasErrors = true;
           }
         }
 
         if ('userEmail' in this.formData && (!this.isEditing || this.formData.userEmail !== this.originalData?.userEmail)) {
-          const emailExists = await firstValueFrom(this.userService.checkEmailExists(this.formData.userEmail));
-          if (emailExists) {
-            this.fieldErrors['userEmail'] = 'Este correo electrónico ya está registrado en el sistema';
+          console.log('Checking email:', this.formData.userEmail);
+          try {
+            const emailExists = await firstValueFrom(this.userService.checkEmailExists(this.formData.userEmail));
+            console.log('Email exists result:', emailExists);
+            if (emailExists) {
+              this.fieldErrors['userEmail'] = 'Este correo electrónico ya está registrado en el sistema';
+              this.animateField('userEmail');
+              hasErrors = true;
+            }
+          } catch (error) {
+            console.error('Error al verificar email:', error);
+            this.fieldErrors['userEmail'] = 'Error al verificar email. Intente nuevamente.';
             this.animateField('userEmail');
             hasErrors = true;
           }
         }
 
         if ('userPhone' in this.formData && (!this.isEditing || this.formData.userPhone !== this.originalData?.userPhone)) {
-          const phoneExists = await firstValueFrom(this.userService.checkPhoneExists(this.formData.userPhone));
-          if (phoneExists) {
-            this.fieldErrors['userPhone'] = 'Este número de teléfono ya está registrado en el sistema';
+          console.log('Checking phone:', this.formData.userPhone);
+          try {
+            const phoneExists = await firstValueFrom(this.userService.checkPhoneExists(this.formData.userPhone));
+            console.log('Phone exists result:', phoneExists);
+            if (phoneExists) {
+              this.fieldErrors['userPhone'] = 'Este número de teléfono ya está registrado en el sistema';
+              this.animateField('userPhone');
+              hasErrors = true;
+            }
+          } catch (error) {
+            console.error('Error al verificar teléfono:', error);
+            this.fieldErrors['userPhone'] = 'Error al verificar teléfono. Intente nuevamente.';
             this.animateField('userPhone');
             hasErrors = true;
           }
