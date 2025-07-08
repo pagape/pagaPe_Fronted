@@ -70,15 +70,15 @@
       </ng-template>
       <ng-template pTemplate="body" let-evaluacion>
         <tr>
-          <td>{{ evaluacion.fecha }}</td>
-          <td>{{ evaluacion.destinatario }}</td>
-          <td>{{ evaluacion.tipoDestinatario }}</td>
+          <td>{{ evaluacion.createdAt }}</td>
+          <td>{{ evaluacion.clientName }}</td>
+          <td>{{ evaluacion.serviceName }}</td>
           <td>
-              <span class="status-badge" [ngClass]="{'aprobado': evaluacion.estado === 'Aprobado', 'pendiente': evaluacion.estado === 'Pendiente'}">
-                {{ evaluacion.estado }}
+              <span class="status-badge" [ngClass]="{'aprobado': evaluacion.status === 'CERRADA', 'pendiente': evaluacion.status === 'ABIERTA'}">
+                {{ evaluacion.status }}
               </span>
           </td>
-          <td>{{ evaluacion.puntaje }}</td>
+          <td>{{ evaluacion.sentimentScore }}</td>
 
         </tr>
       </ng-template>

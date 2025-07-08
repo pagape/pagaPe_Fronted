@@ -13,6 +13,8 @@ import {DatePickerModule} from 'primeng/datepicker';
 
 import {TableModule} from 'primeng/table';
 import {SelectModule} from 'primeng/select';
+import {ConversationService} from "../../../services/conversation/conversation.service";
+import {MessageService} from "primeng/api";
 
 
 Chart.register(...registerables);
@@ -50,24 +52,14 @@ export class UserEvaluationComponent implements AfterViewInit{
     }
   ];
 
-  public chartItems = [
-    { label: 'Negativo', color: '#FF9A57', value: 2 },
-    { label: 'Positivo', color: '#6BE39C', value: 9 },
-  ];
-  total = this.chartItems.reduce((sum, item) => sum + item.value, 0);
+  negativeValue:number=0;
+  positiveValue:number=0;
+  public chartItems: { label: string; color: string; value: number }[] = [];
 
-  public doughnutChartData: ChartData<'doughnut'> = {
+  public total: number = 0;
 
-    labels: this.chartItems.map(item => item.label),
+  public doughnutChartData!: ChartData<'doughnut'>;
 
-    datasets: [
-      {
-        data: this.chartItems.map(item => parseFloat(((item.value / this.total) * 100).toFixed(2))),
-        backgroundColor: this.chartItems.map(item => item.color),
-        hoverBackgroundColor: ['#4CAF50', '#E65100', '#2E7D32', '#F9A825', '#7CB342', '#00897B']
-      }
-    ]
-  };
 
   public doughnutChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
@@ -145,16 +137,22 @@ export class UserEvaluationComponent implements AfterViewInit{
     }
   };
 
-  public barChartData: any;
-  public barChartOptions: any;
+
+  public barChartData!: any;
+  public barChartOptions!: any;
+  public emotionLabels: string[] = [];
+  public emotionData: number[] = [];
+
 
   rangeDates: Date[] | undefined;
   countSelected: any;
 
 
 
-  constructor(private dialogService: DialogService ) {
-    this.loadChartData();
+  constructor(private dialogService: DialogService, public conversationService:ConversationService, public  messageService:MessageService) {
+    this.loadSentimentMetrics();
+    this.loadStatusMetrics();
+    this.loadData();
     // Chart.register(this.centerTextPlugin);
 
   }
@@ -166,58 +164,142 @@ export class UserEvaluationComponent implements AfterViewInit{
   }
 
 
-  loadChartData() {
-    this.barChartData = {
-      labels: ['Enojado', 'Insatisfecho', 'Satisfecho', 'Completamente satisfecho'],
-      datasets: [
-        {
-          label: 'Porcentaje %',
-          data: [15, 35, 65, 40], // Valores en porcentaje
-          backgroundColor: ['#E57373', '#FBC02D', '#AED581', '#66BB6A'],
-          borderRadius: 40
-        }
-      ]
-    };
 
-    this.barChartOptions = {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false
-        }
+
+  loadData() {
+    this.conversationService.getAllConversations().subscribe({
+      next: (response) => {
+        console.log('Respuesta cruda:', response);
+
+        this.evaluaciones = response;
+
+        console.log('Datos normalizados:', this.evaluaciones);
       },
-      scales: {
-        y: {
-          title: {
-            display: true,
-            text: 'Porcentaje %',
-            font: {
-              size: 14,
-              weight: 'bold'
-            },
-            color: '#1F3C88'
-          },
-          min: 0,
-          max: 100,
-          ticks: {
-            stepSize: 20
-          },
-          grid: {
-            display: false
-          }
-        },
-        x: {
-          ticks: {
-            autoSkip: false
-          },
-          grid: {
-            display: false
-          }
-        }
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudieron cargar las conversaciones'
+        });
       }
-    };
+    });
+
   }
 
+  loadSentimentMetrics() {
+    this.conversationService.getSentimentMetrics().subscribe({
+      next: (response) => {
+        console.log('Respuesta cruda:', response);
+
+        // Armar labels y data desde el backend
+        this.emotionLabels = Object.keys(response.distribution);
+        this.emotionData = this.emotionLabels.map(
+          label => response.percentages[label] ?? 0
+        );
+
+        this.barChartData = {
+          labels: this.emotionLabels,
+          datasets: [
+            {
+              label: 'Porcentaje %',
+              data: this.emotionData,
+              backgroundColor: ['#E57373', '#FBC02D', '#AED581', '#66BB6A'],
+              borderRadius: 40
+            }
+          ]
+        };
+
+        this.barChartOptions = {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Porcentaje %',
+                font: {
+                  size: 14,
+                  weight: 'bold'
+                },
+                color: '#1F3C88'
+              },
+              min: 0,
+              max: 100,
+              ticks: {
+                stepSize: 20
+              },
+              grid: {
+                display: false
+              }
+            },
+            x: {
+              ticks: {
+                autoSkip: false
+              },
+              grid: {
+                display: false
+              }
+            }
+          }
+        };
+
+        console.log('Bar Chart Data:', this.barChartData);
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudieron cargar las métricas de emociones.'
+        });
+      }
+    });
+  }
+
+  loadStatusMetrics() {
+    this.conversationService.getStatusMetrics().subscribe({
+      next: (response) => {
+        console.log('Respuesta cruda:', response);
+
+        this.positiveValue = response.distribution?.POSITIVO ?? 0;
+        this.negativeValue = response.distribution?.NEGATIVO ?? 0;
+
+        this.chartItems = [
+          { label: 'Negativo', color: '#FF9A57', value: this.negativeValue },
+          { label: 'Positivo', color: '#6BE39C', value: this.positiveValue },
+        ];
+
+       // this.total = this.chartItems.reduce((sum, item) => sum + item.value, 0);
+       this.total= response.totalConversations
+        this.doughnutChartData = {
+          labels: this.chartItems.map(item => item.label),
+          datasets: [
+            {
+              data: this.chartItems.map(item => {
+                return this.total > 0
+                  ? parseFloat(((item.value / this.total) * 100).toFixed(2))
+                  : 0;
+              }),
+              backgroundColor: this.chartItems.map(item => item.color),
+              hoverBackgroundColor: ['#4CAF50', '#E65100', '#2E7D32', '#F9A825', '#7CB342', '#00897B']
+            }
+          ]
+        };
+
+        console.log('Datos normalizados:', this.chartItems);
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudieron cargar las conversaciones'
+        });
+      }
+    });
+  }
   return() {
 
   }
