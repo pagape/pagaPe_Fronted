@@ -47,12 +47,19 @@ export class SharedFormComponent {
   private namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,50}$/;
   private phonePattern = /^9[0-9]{8}$/; // Debe comenzar con 9 y tener 9 dígitos en total
   private dniPattern = /^[0-9]{8}$/; // Exactamente 8 dígitos
+  private emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Formato de email válido
 
   // Lista de números de teléfono no válidos (secuencias repetitivas)
   private invalidPhoneNumbers = [
     '900000000', '911111111', '922222222', '933333333', '944444444',
     '955555555', '966666666', '977777777', '988888888', '999999999',
     '912345678', '987654321', '900123456', '901234567'
+  ];
+
+  // Lista de dominios de email comunes para validación adicional
+  private commonEmailDomains = [
+    'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'yahoo.es',
+    'live.com', 'icloud.com', 'aol.com', 'protonmail.com', 'tutanota.com'
   ];
 
   constructor(
@@ -95,6 +102,75 @@ export class SharedFormComponent {
       this.animateField(fieldName);
       return false;
     }
+    return true;
+  }
+
+  // Validar formato de email
+  validateEmailFormat(email: string): boolean {
+    if (!email || email.trim() === '') {
+      this.fieldErrors['userEmail'] = 'El correo electrónico es requerido';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar formato básico
+    if (!this.emailPattern.test(email)) {
+      this.fieldErrors['userEmail'] = 'El formato del correo electrónico no es válido';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que no tenga espacios
+    if (email.includes(' ')) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico no debe contener espacios';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar longitud mínima y máxima
+    if (email.length < 5 || email.length > 254) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico debe tener entre 5 y 254 caracteres';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que no empiece o termine con punto
+    if (email.startsWith('.') || email.endsWith('.')) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico no puede empezar o terminar con punto';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que no tenga puntos consecutivos
+    if (email.includes('..')) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico no puede contener puntos consecutivos';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que la parte local (antes del @) no sea muy larga
+    const localPart = email.split('@')[0];
+    if (localPart.length > 64) {
+      this.fieldErrors['userEmail'] = 'La parte local del correo electrónico es demasiado larga';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que tenga un dominio válido
+    const domainPart = email.split('@')[1];
+    if (!domainPart || domainPart.length < 2) {
+      this.fieldErrors['userEmail'] = 'El dominio del correo electrónico no es válido';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que el dominio no tenga caracteres especiales al inicio o final
+    if (domainPart.startsWith('-') || domainPart.endsWith('-')) {
+      this.fieldErrors['userEmail'] = 'El dominio del correo electrónico no es válido';
+      this.animateField('userEmail');
+      return false;
+    }
+
     return true;
   }
 
@@ -161,6 +237,10 @@ export class SharedFormComponent {
         }
 
         if ('userLastName' in this.formData && !this.validateNameFormat(this.formData.userLastName, 'userLastName')) {
+          hasErrors = true;
+        }
+
+        if ('userEmail' in this.formData && !this.validateEmailFormat(this.formData.userEmail)) {
           hasErrors = true;
         }
 
