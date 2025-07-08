@@ -1,12 +1,7 @@
 <div class="uflex aiend uflex-jbtw mb20 ststylecont">
   <div class="uflex-v gap10">
     <h2 class="headingst">Evaluacion de usuario</h2>
-    <div class="uflex gap10 aicenter ">
-      <label for="year" class="fw-bold">Usuarios que han respondido</label>
-      <p-select id="year" placeholder="Seleccionar"
-                [options]="count" [(ngModel)]="countSelected" >
-      </p-select>
-    </div>
+
   </div>
   <div class="uflex-v gap10 ">
     <p-datepicker [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="range" [readonlyInput]="true"  (onSelect)="onDateRangeSelected()"></p-datepicker>
