@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
   dateRange: Date[] | undefined;
   stateSelected: any;
   reminders: Reminder[] = [];
+  filteredReminders: Reminder[] = [];
   loading: boolean = false;
 
   states = [
@@ -78,15 +79,8 @@ export class HomeComponent implements OnInit {
     this.reminderService.getAllReminders().subscribe({
       next: (reminders) => {
         this.reminders = reminders;
-        this.data = reminders.map(reminder => ({
-          id: reminder.id,
-          reminderName: reminder.reminderName,
-          description: reminder.description,
-          scheduledDate: this.formatDate(reminder.scheduledDate),
-          status: reminder.status,
-          relativeDays: reminder.relativeDays,
-          debtorFilter: reminder.debtorFilter
-        }));
+        this.filteredReminders = reminders;
+        this.updateDataTable();
         this.loading = false;
       },
       error: (error) => {
@@ -95,6 +89,52 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  updateDataTable(): void {
+    this.data = this.filteredReminders.map(reminder => ({
+      id: reminder.id,
+      reminderName: reminder.reminderName,
+      description: reminder.description,
+      scheduledDate: this.formatDate(reminder.scheduledDate),
+      status: reminder.status,
+      relativeDays: reminder.relativeDays,
+      debtorFilter: reminder.debtorFilter
+    }));
+  }
+
+  onDateRangeChange(): void {
+    this.filterRemindersByDate();
+  }
+
+  onDateRangeClear(): void {
+    this.dateRange = undefined;
+    this.filteredReminders = [...this.reminders];
+    this.updateDataTable();
+  }
+
+  private filterRemindersByDate(): void {
+    if (!this.dateRange || this.dateRange.length === 0) {
+      this.filteredReminders = [...this.reminders];
+    } else {
+      const startDate = this.dateRange[0];
+      const endDate = this.dateRange[1] || this.dateRange[0];
+      
+      this.filteredReminders = this.reminders.filter(reminder => {
+        const reminderDate = new Date(reminder.scheduledDate);
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        start.setHours(0, 0, 0, 0);
+        end.setHours(23, 59, 59, 999);
+        reminderDate.setHours(12, 0, 0, 0);
+        
+        return reminderDate >= start && reminderDate <= end;
+      });
+    }
+    
+    this.updateDataTable();
+  }
+
 
   private formatDate(dateString: string): string {
     const date = new Date(dateString);

@@ -10,7 +10,8 @@
       <div class="uflex gap10 aicenter" >
         <label for="daterange">Fecha registro</label>
         <p-date-picker [(ngModel)]="dateRange" selectionMode="range" inputId="daterange" dateFormat="dd/mm/yy"
-                       placeholder="Elige fecha inicio y fecha fin" showIcon="true"></p-date-picker>
+                       placeholder="Elige fecha inicio y fecha fin" showIcon="true" 
+                       (onSelect)="onDateRangeChange()" (onClearClick)="onDateRangeClear()"></p-date-picker>
 
       </div>
       </div>
