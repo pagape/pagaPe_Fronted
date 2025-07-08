@@ -47,12 +47,19 @@ export class SharedFormComponent {
   private namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,50}$/;
   private phonePattern = /^9[0-9]{8}$/; // Debe comenzar con 9 y tener 9 dígitos en total
   private dniPattern = /^[0-9]{8}$/; // Exactamente 8 dígitos
+  private emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Formato de email válido
 
   // Lista de números de teléfono no válidos (secuencias repetitivas)
   private invalidPhoneNumbers = [
     '900000000', '911111111', '922222222', '933333333', '944444444',
     '955555555', '966666666', '977777777', '988888888', '999999999',
     '912345678', '987654321', '900123456', '901234567'
+  ];
+
+  // Lista de dominios de email comunes para validación adicional
+  private commonEmailDomains = [
+    'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'yahoo.es',
+    'live.com', 'icloud.com', 'aol.com', 'protonmail.com', 'tutanota.com'
   ];
 
   constructor(
@@ -95,6 +102,75 @@ export class SharedFormComponent {
       this.animateField(fieldName);
       return false;
     }
+    return true;
+  }
+
+  // Validar formato de email
+  validateEmailFormat(email: string): boolean {
+    if (!email || email.trim() === '') {
+      this.fieldErrors['userEmail'] = 'El correo electrónico es requerido';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar formato básico
+    if (!this.emailPattern.test(email)) {
+      this.fieldErrors['userEmail'] = 'El formato del correo electrónico no es válido';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que no tenga espacios
+    if (email.includes(' ')) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico no debe contener espacios';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar longitud mínima y máxima
+    if (email.length < 5 || email.length > 254) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico debe tener entre 5 y 254 caracteres';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que no empiece o termine con punto
+    if (email.startsWith('.') || email.endsWith('.')) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico no puede empezar o terminar con punto';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que no tenga puntos consecutivos
+    if (email.includes('..')) {
+      this.fieldErrors['userEmail'] = 'El correo electrónico no puede contener puntos consecutivos';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que la parte local (antes del @) no sea muy larga
+    const localPart = email.split('@')[0];
+    if (localPart.length > 64) {
+      this.fieldErrors['userEmail'] = 'La parte local del correo electrónico es demasiado larga';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que tenga un dominio válido
+    const domainPart = email.split('@')[1];
+    if (!domainPart || domainPart.length < 2) {
+      this.fieldErrors['userEmail'] = 'El dominio del correo electrónico no es válido';
+      this.animateField('userEmail');
+      return false;
+    }
+
+    // Verificar que el dominio no tenga caracteres especiales al inicio o final
+    if (domainPart.startsWith('-') || domainPart.endsWith('-')) {
+      this.fieldErrors['userEmail'] = 'El dominio del correo electrónico no es válido';
+      this.animateField('userEmail');
+      return false;
+    }
+
     return true;
   }
 
@@ -164,6 +240,10 @@ export class SharedFormComponent {
           hasErrors = true;
         }
 
+        if ('userEmail' in this.formData && !this.validateEmailFormat(this.formData.userEmail)) {
+          hasErrors = true;
+        }
+
         if ('userPhone' in this.formData && !this.validatePhoneFormat(this.formData.userPhone)) {
           hasErrors = true;
         }
@@ -173,27 +253,54 @@ export class SharedFormComponent {
         }
 
         if ('userDNI' in this.formData && (!this.isEditing || this.formData.userDNI !== this.originalData?.userDNI)) {
-          const dniExists = await firstValueFrom(this.userService.checkDniExists(this.formData.userDNI));
-          if (dniExists) {
-            this.fieldErrors['userDNI'] = 'Este DNI ya está registrado en el sistema';
+          console.log('Checking DNI:', this.formData.userDNI);
+          try {
+            const dniExists = await firstValueFrom(this.userService.checkDniExists(this.formData.userDNI));
+            console.log('DNI exists result:', dniExists);
+            if (dniExists) {
+              this.fieldErrors['userDNI'] = 'Este DNI ya está registrado en el sistema';
+              this.animateField('userDNI');
+              hasErrors = true;
+            }
+          } catch (error) {
+            console.error('Error al verificar DNI:', error);
+            this.fieldErrors['userDNI'] = 'Error al verificar DNI. Intente nuevamente.';
             this.animateField('userDNI');
             hasErrors = true;
           }
         }
 
         if ('userEmail' in this.formData && (!this.isEditing || this.formData.userEmail !== this.originalData?.userEmail)) {
-          const emailExists = await firstValueFrom(this.userService.checkEmailExists(this.formData.userEmail));
-          if (emailExists) {
-            this.fieldErrors['userEmail'] = 'Este correo electrónico ya está registrado en el sistema';
+          console.log('Checking email:', this.formData.userEmail);
+          try {
+            const emailExists = await firstValueFrom(this.userService.checkEmailExists(this.formData.userEmail));
+            console.log('Email exists result:', emailExists);
+            if (emailExists) {
+              this.fieldErrors['userEmail'] = 'Este correo electrónico ya está registrado en el sistema';
+              this.animateField('userEmail');
+              hasErrors = true;
+            }
+          } catch (error) {
+            console.error('Error al verificar email:', error);
+            this.fieldErrors['userEmail'] = 'Error al verificar email. Intente nuevamente.';
             this.animateField('userEmail');
             hasErrors = true;
           }
         }
 
         if ('userPhone' in this.formData && (!this.isEditing || this.formData.userPhone !== this.originalData?.userPhone)) {
-          const phoneExists = await firstValueFrom(this.userService.checkPhoneExists(this.formData.userPhone));
-          if (phoneExists) {
-            this.fieldErrors['userPhone'] = 'Este número de teléfono ya está registrado en el sistema';
+          console.log('Checking phone:', this.formData.userPhone);
+          try {
+            const phoneExists = await firstValueFrom(this.userService.checkPhoneExists(this.formData.userPhone));
+            console.log('Phone exists result:', phoneExists);
+            if (phoneExists) {
+              this.fieldErrors['userPhone'] = 'Este número de teléfono ya está registrado en el sistema';
+              this.animateField('userPhone');
+              hasErrors = true;
+            }
+          } catch (error) {
+            console.error('Error al verificar teléfono:', error);
+            this.fieldErrors['userPhone'] = 'Error al verificar teléfono. Intente nuevamente.';
             this.animateField('userPhone');
             hasErrors = true;
           }
