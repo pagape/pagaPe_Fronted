@@ -60,11 +60,19 @@ export class AuthService {
     localStorage.setItem('access_token', tokens.access_token);
     localStorage.setItem('refresh_token', tokens.refresh_token);
   }
+  refreshToken(): Observable<any> {
+    const refreshToken = localStorage.getItem('refresh_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${refreshToken}`
+    });
+    return this.http.post<any>(`${this.baseUrl}/refresh-token`, null, { headers });
+  }
+
   solicitarRecuperacion(email: string): Observable<string> {
     return this.http.post<string>(
       `${this.baseUrl}/solicitar-recuperacion?email=${email}`,
       null,
-      { responseType: 'text' as 'json' } // Asegura que se maneje como texto
+      { responseType: 'text' as 'json' }
     );
   }
 

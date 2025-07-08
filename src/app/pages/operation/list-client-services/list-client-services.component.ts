@@ -337,7 +337,7 @@ export class ListClientServicesComponent implements OnInit{
 
     ref.onClose.subscribe((confirmed) => {
       if (confirmed) {
-        this.service.deleteClient(row.id).subscribe({
+        this.service.deleteClientService(row.id).subscribe({
           next: () => {
             this.messageService.add({
               severity: 'success',
@@ -346,7 +346,7 @@ export class ListClientServicesComponent implements OnInit{
             });
             this.loadData();
           },
-          error: (error) => {
+          error: (error: any) => {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',

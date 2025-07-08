@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
 import {CommonModule} from "@angular/common";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -11,7 +11,6 @@ import {UserService} from "../../../services/user/user.service";
     selector: 'app-login',
     imports: [
         FormsModule,
-        RouterLink,
         CommonModule
     ],
     providers: [AuthService, DialogService],

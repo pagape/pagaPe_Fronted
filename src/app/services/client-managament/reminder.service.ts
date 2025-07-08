@@ -7,8 +7,9 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientServiceService {
-  private apiUrl = `${environment.apiUrl}/api/client-service`;
+export class ReminderService {
+  private apiUrl = `${environment.apiUrl}/api/reminders`;
+  
   constructor(private http: HttpClient) {}
 
   getAuthHeaders(): HttpHeaders {
@@ -19,56 +20,37 @@ export class ClientServiceService {
     });
   }
 
-  getAllClientServices(): Observable<any[]> {
+  getAllReminders(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(this.apiUrl, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  getClientServiceById(id: number): Observable<any> {
+  getReminderById(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  createClientService(clientService: any): Observable<any> {
+  createReminder(reminder: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(this.apiUrl, clientService, { headers })
+    return this.http.post<any>(this.apiUrl, reminder, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  updateClientService(id: number, clientService: any): Observable<any> {
+  processRemindersNow(): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.patch<any>(`${this.apiUrl}/${id}`, clientService, { headers })
+    return this.http.post<any>(`${this.apiUrl}/process-now`, null, { headers })
       .pipe(catchError(this.handleError));
   }
 
-  deleteClientService(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers })
-      .pipe(catchError(this.handleError));
-  }
-
-
-  // Manejo de errores
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
-
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Error del lado del servidor
-      if (error.status === 400 && error.error && error.error.error === 'Número de teléfono duplicado') {
-        return throwError(() => ({
-          status: error.status,
-          message: error.error.message || 'Ya existe otro cliente con este número de teléfono'
-        }));
-      }
-
       errorMessage = `Código: ${error.status}, Mensaje: ${error.message}`;
     }
-
     return throwError(() => ({
       status: error.status,
       message: errorMessage

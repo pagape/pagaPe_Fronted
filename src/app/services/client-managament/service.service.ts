@@ -19,10 +19,23 @@ export class ServiceService {
     });
   }
 
-  // Obtener todos los clientes
   getAllServices(): Observable<any[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<any[]>(this.apiUrl, { headers });
+    return this.http.get<any[]>(this.apiUrl, { headers })
+      .pipe(catchError(this.handleError));
+  }
+  
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Código: ${error.status}, Mensaje: ${error.message}`;
+    }
+    return throwError(() => ({
+      status: error.status,
+      message: errorMessage
+    }));
   }
 
 

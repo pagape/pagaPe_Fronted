@@ -24,7 +24,7 @@
       type="button"
       class="btn-send"
       (click)="sendCode()"
-      [disabled]="!codeForm.controls['email']?.valid"
+      [disabled]="!codeForm.controls['email'].valid"
     >
       <i class="material-symbols-outlined">send</i> Enviar código
     </button>}

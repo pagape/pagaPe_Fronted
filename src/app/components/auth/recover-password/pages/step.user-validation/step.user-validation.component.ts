@@ -27,11 +27,11 @@ export class StepUserValidationComponent {
     this.lastName = last.join(' ');
 
     this.userService.validateUser(firstName, this.lastName, this.dni).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('Usuario encontrado:', response);
         this.validationComplete.emit(true);
       },
-      error: (err) => {
+      error: (err: any) => {
         alert('Datos inválidos o no encontrados');
         this.validationComplete.emit(false);
       }

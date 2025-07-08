@@ -139,13 +139,13 @@ export class ClientHistoryComponent implements OnInit {
   loadClientHistory(clientId: number) {
     this.isLoading = true;
     this.clientService.getClientHistory(clientId).subscribe({
-      next: (history) => {
+      next: (history: any) => {
         this.history = history;
         this.clientName = history?.clientName || 'Cliente';
         this.updateHistoryState();
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

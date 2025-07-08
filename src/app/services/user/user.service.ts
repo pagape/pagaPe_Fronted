@@ -28,13 +28,16 @@ export class UserService {
 
   getAllUsers(): Observable<UserInfo[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<UserInfo[]>(`${this.apiUrl}/status/true`, { headers });
+    return this.http.get<UserInfo[]>(`${this.apiUrl}`, { headers });
+  }
+
+  getUsersByStatus(status: boolean): Observable<UserInfo[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<UserInfo[]>(`${this.apiUrl}/status/${status}`, { headers });
   }
 
   getUserProfile(): Observable<any> {
-
-    const token = localStorage.getItem('access_token');
-    const headers = this.getAuthHeaders()
+    const headers = this.getAuthHeaders();
     return this.http.get(`${this.apiUrl}/me`, { headers });
   }
 
@@ -43,19 +46,53 @@ export class UserService {
     return this.http.put<UserInfo>(`${this.apiUrl}/${userId}`, user, { headers });
   }
 
-  deleteUser(userId: number): Observable<void> {
+  getUserById(userId: number): Observable<UserInfo> {
     const headers = this.getAuthHeaders();
-    return this.http.patch<void>(`${this.apiUrl}/${userId}`, {},{ headers });
+    return this.http.get<UserInfo>(`${this.apiUrl}/${userId}`, { headers });
   }
 
-  validateUser(firstName: string, lastName: string, dni: string): Observable<any> {
+  getUserImage(userId: number): Observable<Blob> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/${userId}/image`, { headers, responseType: 'blob' });
+  }
+
+  uploadUserImage(userId: number, image: File): Observable<UserInfo> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    const formData = new FormData();
+    formData.append('image', image);
+    return this.http.post<UserInfo>(`${this.apiUrl}/${userId}/addImage`, formData, { headers });
+  }
+
+  updateUserPartial(userId: number, userData: Partial<UserInfo>): Observable<UserInfo> {
+    const headers = this.getAuthHeaders();
+    return this.http.put<UserInfo>(`${this.apiUrl}/update2/${userId}`, userData, { headers });
+  }
+
+  deleteUser(userId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/${userId}`, { headers });
+  }
+
+  deactivateUser(userId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    return this.http.patch<void>(`${this.apiUrl}/${userId}`, {}, { headers });
+  }
+
+  findUserByNameAndDni(firstName: string, lastName: string, dni: string): Observable<UserInfo> {
+    const headers = this.getAuthHeaders();
     const body = {
       userFirstName: firstName,
       userLastName: lastName,
-      userDNI: dni.toString()
+      userDNI: dni
     };
+    return this.http.post<UserInfo>(`${this.apiUrl}/nameAndEmail`, body, { headers });
+  }
 
-    return this.http.post<any>(`${this.apiUrl}/nameAndEmail`, body);
+  validateUser(firstName: string, lastName: string, dni: string): Observable<any> {
+    return this.findUserByNameAndDni(firstName, lastName, dni);
   }
 
   checkDniExists(dni: string): Observable<boolean> {
