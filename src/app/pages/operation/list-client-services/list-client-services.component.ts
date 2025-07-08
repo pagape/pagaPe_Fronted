@@ -27,10 +27,11 @@ import {ServiceService} from "../../../services/client-managament/service.servic
 export class ListClientServicesComponent implements OnInit{
   searchText: string = '';
   dateStart: Date | undefined;
-
   dateEnd: Date | undefined;
-
-  clients: any[] =[];
+  
+  clients: any[] = [];
+  allClientServices: any[] = []; // Para almacenar todos los datos sin filtrar
+  isLoading: boolean = false;
 
   servicios: any[]=[]
 
@@ -155,10 +156,7 @@ export class ListClientServicesComponent implements OnInit{
     },
   ];
   ref: DynamicDialogRef | undefined;
-  services: any[] = [
-    'Telefonia', 'Internet', 'TV'
-
-  ];
+  services: any[] = [];
 
   serviceSelected: any = null;
 
@@ -175,18 +173,24 @@ export class ListClientServicesComponent implements OnInit{
   }
 
   loadData() {
+    this.isLoading = true;
     this.service.getAllClientServices().subscribe({
       next: (clients) => {
         console.log('Respuesta cruda:', clients);
 
-        this.data = clients.map(client => ({
+        // Almacenar todos los datos sin filtrar
+        this.allClientServices = clients.map(client => ({
           ...client,
           nombreCliente: client.client?.userFirstName ?? '',
           apellidoCliente: client.client?.userLastName ?? '',
           nombreServicio: client.service?.nombreServicio ?? ''
         }));
 
-        console.log('Datos normalizados:', this.data);
+        console.log('Datos normalizados:', this.allClientServices);
+        
+        // Aplicar filtros iniciales
+        this.applyFilters();
+        this.isLoading = false;
       },
       error: (error) => {
         this.messageService.add({
@@ -194,9 +198,9 @@ export class ListClientServicesComponent implements OnInit{
           summary: 'Error',
           detail: 'No se pudieron cargar los servicios del cliente'
         });
+        this.isLoading = false;
       }
     });
-
   }
 
 
@@ -236,11 +240,14 @@ export class ListClientServicesComponent implements OnInit{
   loadService() {
     this.serviceService.getAllServices().subscribe({
       next: (s) => {
-        console.log(s)
+        console.log('Servicios del backend:', s)
         this.servicios = s;
         this.fields[1].options = s;
-        console.log('Servicios cargados:', this.servicios)
-        console.log("los field: "+ this.fields[1].options)
+        
+        // Llenar el array services para el filtro con los nombres de servicios
+        this.services = s.map((servicio: any) => servicio.nombreServicio);
+        
+        console.log('Servicios para filtro:', this.services)
 
       },
       error: (error) => {
@@ -366,6 +373,85 @@ export class ListClientServicesComponent implements OnInit{
         });
       }
     });
+  }
+
+  // Métodos de filtrado
+  applyFilters(): void {
+    let filtered = [...this.allClientServices];
+
+    // Filtro de texto (busca en nombre y apellido del cliente)
+    if (this.searchText && this.searchText.trim() !== '') {
+      const search = this.searchText.toLowerCase().trim();
+      filtered = filtered.filter(item => {
+        const nombreCompleto = `${item.nombreCliente} ${item.apellidoCliente}`.toLowerCase();
+        const servicio = (item.nombreServicio || '').toLowerCase();
+        return nombreCompleto.includes(search) || servicio.includes(search);
+      });
+    }
+
+    // Filtro de fecha (usando el mismo método que funcionó en clientes)
+    if (this.dateStart && this.dateEnd) {
+      filtered = filtered.filter(item => {
+        if (!item.issueDate) return false;
+
+        // Parsear fecha evitando problemas de zona horaria
+        let clientDateString: string;
+        if (item.issueDate.includes('-')) {
+          const [year, month, day] = item.issueDate.split('-');
+          clientDateString = `${parseInt(day)}/${parseInt(month)}/${year}`;
+        } else {
+          const createdDate = new Date(item.issueDate);
+          if (isNaN(createdDate.getTime())) return false;
+          clientDateString = createdDate.toLocaleDateString('es-ES');
+        }
+
+        const startDateString = this.dateStart!.toLocaleDateString('es-ES');
+        const endDateString = this.dateEnd!.toLocaleDateString('es-ES');
+
+        return this.isDateInRange(clientDateString, startDateString, endDateString);
+      });
+    }
+
+    // Filtro de tipo de servicio
+    if (this.serviceSelected) {
+      filtered = filtered.filter(item => {
+        return item.nombreServicio === this.serviceSelected;
+      });
+    }
+
+    this.data = filtered;
+
+    console.log('Filtros aplicados:', {
+      searchText: this.searchText,
+      dateStart: this.dateStart,
+      dateEnd: this.dateEnd,
+      serviceSelected: this.serviceSelected,
+      totalItems: this.allClientServices.length,
+      filteredItems: this.data.length
+    });
+  }
+
+  // Método de comparación de fechas (mismo que en clientes)
+  private isDateInRange(clientDateString: string, startDateString: string, endDateString: string): boolean {
+    const parseSpanishDate = (dateStr: string): Date => {
+      const [day, month, year] = dateStr.split('/').map(Number);
+      return new Date(year, month - 1, day);
+    };
+    
+    const clientDate = parseSpanishDate(clientDateString);
+    const startDate = parseSpanishDate(startDateString);
+    const endDate = parseSpanishDate(endDateString);
+    
+    return clientDate >= startDate && clientDate <= endDate;
+  }
+
+  // Limpiar filtros
+  clearFilters(): void {
+    this.searchText = '';
+    this.dateStart = undefined;
+    this.dateEnd = undefined;
+    this.serviceSelected = null;
+    this.applyFilters();
   }
 
 }

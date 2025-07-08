@@ -12,7 +12,8 @@
         <div class="input-icon brfield  ">
           <i class="material-symbols-outlined">search</i>
           <input  class="w100 search" [(ngModel)]="searchText"  type="text" pInputText
-                  placeholder="Buscar "
+                  placeholder="Buscar cliente o servicio"
+                  (input)="applyFilters()"
           />
         </div>
 
@@ -20,21 +21,25 @@
         <div class="uflex gap10 aicenter" >
           <label for="dateStart">Fecha inicio</label>
           <p-date-picker [(ngModel)]="dateStart"  inputId="dateStart" dateFormat="dd/mm/yy"
-                         placeholder="Elige fecha inicio " showIcon="true"></p-date-picker>
+                         placeholder="Elige fecha inicio " showIcon="true"
+                         (onSelect)="applyFilters()" (onClearClick)="applyFilters()"></p-date-picker>
 
         </div>
 
         <div class="uflex gap10 aicenter" >
           <label for="dateEnd">Fecha fin</label>
           <p-date-picker [(ngModel)]="dateEnd" inputId="dateEnd" dateFormat="dd/mm/yy"
-                         placeholder="Elige  fecha fin" showIcon="true"></p-date-picker>
+                         placeholder="Elige  fecha fin" showIcon="true"
+                         (onSelect)="applyFilters()" (onClearClick)="applyFilters()"></p-date-picker>
 
         </div>
 
         <div class="uflex gap10 aicenter">
           <label for="bussiness" class="fw-bold">Tipo de servicio: </label>
           <p-select id="bussiness"
-                    [options]="services" [(ngModel)]="serviceSelected" >
+                    [options]="services" [(ngModel)]="serviceSelected" 
+                    placeholder="Seleccionar servicio"
+                    (onChange)="applyFilters()">
           </p-select>
         </div>
 
@@ -42,9 +47,14 @@
 
       </div>
 
-      <button pButton class="uflex-center btn-primary" type="button" >
-        <i class="material-symbols-outlined">document_search</i>Buscar
-      </button>
+      <div class="uflex gap10">
+        <button pButton class="uflex-center btn-primary" type="button" (click)="applyFilters()">
+          <i class="material-symbols-outlined">document_search</i>Buscar
+        </button>
+        <button pButton class="uflex-center btn-secondary" type="button" (click)="clearFilters()">
+          <i class="material-symbols-outlined">clear</i>Limpiar
+        </button>
+      </div>
     </article>
 
 
