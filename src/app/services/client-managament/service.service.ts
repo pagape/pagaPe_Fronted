@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Service, ServiceRequest } from '../../models/service.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,15 @@ export class ServiceService {
     });
   }
 
-  getAllServices(): Observable<any[]> {
+  getAllServices(): Observable<Service[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<any[]>(this.apiUrl, { headers })
+    return this.http.get<Service[]>(this.apiUrl, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  createService(service: ServiceRequest): Observable<Service> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<Service>(this.apiUrl, service, { headers })
       .pipe(catchError(this.handleError));
   }
   

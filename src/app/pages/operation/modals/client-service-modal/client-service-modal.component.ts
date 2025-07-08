@@ -42,8 +42,8 @@ export class ClientServiceModalComponent implements OnInit{
   services: any[] = [];
 
   payments: any[] = [
-    'QUINCENAL', 'FIN_DE_MES'
-
+    { id: 'QUINCENAL', name: 'Quincenal' },
+    { id: 'FIN_DE_MES', name: 'Fin de mes' }
   ];
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig,private messageService: MessageService,public serviceService: ServiceService, public clientService: ClientService,public service:ClientServiceService,public dialogService: DialogService) {
 
@@ -71,12 +71,26 @@ export class ClientServiceModalComponent implements OnInit{
 
   loadClients() {
     this.clientService.getAllClients().subscribe({
-      next: (clients) => {
-        console.log(clients)
-        this.clients = clients;
-       // this.fields[0].options= clients
-        console.log(this.clients)
-       // console.log("los field: "+ this.fields[0].options)
+      next: (response) => {
+        console.log('API Response:', response)
+        // Check if response has clients property (API returns object with clients array)
+        if (response && response.clients) {
+          this.clients = response.clients;
+        } else if (Array.isArray(response)) {
+          // If it's directly an array
+          this.clients = response;
+        } else {
+          console.error('Unexpected response format:', response);
+          this.clients = [];
+        }
+        
+        // Add full name property for display
+        this.clients = this.clients.map(client => ({
+          ...client,
+          fullName: `${client.userFirstName} ${client.userLastName}`
+        }));
+        
+        console.log('Clients array:', this.clients)
 
       },
       error: (error) => {
@@ -85,7 +99,7 @@ export class ClientServiceModalComponent implements OnInit{
           summary: 'Error',
           detail: 'No se pudieron cargar los clientes'
         });
-
+        this.clients = [];
       }
     });
 
@@ -117,7 +131,7 @@ export class ClientServiceModalComponent implements OnInit{
   filterClients(event: any) {
     const query = event.query.toLowerCase();
     this.filteredClients = this.clients.filter(cliente =>
-      cliente.userFirstName.toLowerCase().includes(query)
+      cliente.fullName.toLowerCase().includes(query)
     );
   }
 
